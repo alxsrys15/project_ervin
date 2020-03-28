@@ -16,7 +16,7 @@ use Cake\Auth\DefaultPasswordHasher;
  * @property int $referred_by
  * @property int $user_level
  */
-class User extends Entity
+class Users extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

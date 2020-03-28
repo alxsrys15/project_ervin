@@ -17,11 +17,8 @@
 <html>
 <head>
     <title><?= $this->fetch('title') ?></title>
-    <?= $this->Html->css(['bootstrap.min.css']) ?>
-    <?= $this->Html->script(['bootstrap.min.js']) ?>
 </head>
 <body>
     <?= $this->fetch('content') ?>
-    <?= $this->fetch('login.ctp') ?>
 </body>
 </html>

@@ -105,15 +105,39 @@ class UsersController extends AppController
     }
     // Login
     public function login(){
-        $this->layout-> = 'login';
+        $this->layout = 'login';
         if($this->request->is('post')){
             $user = $this->Auth->identify();
             if($user){
                 $this->Auth->setUser($user);
-                return $this->redirect(['controller' => 'index']);
+                return $this->redirect(['controller' => 'home']);
             }
             // Bad Login
             $this->Flash->error('Incorrect Login');
         }
     }
+    public function settings(){
+        $this->layout = 'home';
+    }
+
+    public function appsettings(){
+        $this->loadModel('AppSettings');
+        $appSetting = $this->AppSettings->newEntity();
+
+        if($this->request->is('post')){
+            $appSetting = $this->AppSettings->patchEntity($appSetting, $this->request->data);
+            if($this->AppSettings->save($appSetting)){
+                $this->Flash->success('Successfully inserted!');
+                return $this->redirect(['action' => 'login']);
+            } else {
+                $this->Flash->error('You are not registered');
+            }
+        }
+        $this->set(compact('appSetting'));
+        $this->set('_serialzie', ['appSetting']);
+    }
+
+    // public function beforeFilter(Event $event){
+    //     $this->Auth->allow(['register']);
+    // }
 }
