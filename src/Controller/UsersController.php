@@ -122,19 +122,20 @@ class UsersController extends AppController
 
     public function appsettings(){
         $this->loadModel('AppSettings');
-        $appSetting = $this->AppSettings->newEntity();
+        $appSetting = $this->AppSettings->get('1');
 
-        if($this->request->is('post')){
-            $appSetting = $this->AppSettings->patchEntity($appSetting, $this->request->data);
+        if($this->request->is(['post', 'put'])){
+            $appSetting = $this->AppSettings->patchEntity($appSetting, $this->request->getData());
             if($this->AppSettings->save($appSetting)){
-                $this->Flash->success('Successfully inserted!');
+                $this->Flash->success('Successfully updated!');
                 return $this->redirect(['action' => 'login']);
             } else {
-                $this->Flash->error('You are not registered');
+                $this->Flash->error('Error updating!');
             }
         }
-        $this->set(compact('appSetting'));
-        $this->set('_serialzie', ['appSetting']);
+        $this->set('referral_value', $appSetting->referral_value);
+        $this->set('captcha_value', $appSetting->referral_value);
+        $this->set('appsettings', $appSetting);
     }
 
     // public function beforeFilter(Event $event){
