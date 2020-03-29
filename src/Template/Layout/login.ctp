@@ -9,7 +9,7 @@
     <?= $this->Html->meta('icon') ?>
 
     <?= $this->Html->css(['bootstrap.min.css']) ?>
-    <?= $this->Html->script(['bootstrap.min.js']) ?>
+    <?= $this->Html->script(['jquery.min.js','bootstrap.min.js', 'https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>

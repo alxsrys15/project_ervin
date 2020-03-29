@@ -33,9 +33,16 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-        $this->belongsTo('ReferredBy', [
+
+        $this->belongsTo('ReferredBy',[
             'className' => 'Users',
-            'foreignKey' => 'referred_by'
+            'foreignKey' => 'referred_by',
+            'propertyName' => 'referred_by'
+        ]);
+
+        $this->belongsTo('UserLevels', [
+            'foreignKey' => 'user_level_id',
+            'propertyName' => 'user_level'
         ]);
     }
 
@@ -88,13 +95,28 @@ class UsersTable extends Table
 
         $validator
             ->integer('referred_by')
-            ->requirePresence('referred_by', 'create')
-            ->notEmptyString('referred_by');
+            ->allowEmptyString('referred_by');
 
         $validator
             ->integer('user_level')
             ->requirePresence('user_level', 'create')
             ->notEmptyString('user_level');
+
+        $validator
+            ->scalar('referral_link')
+            ->maxLength('referral_link', 255)
+            ->allowEmptyString('referral_link');
+
+        $validator
+            ->scalar('reference_number')
+            ->maxLength('reference_number', 255)
+            ->requirePresence('reference_number', 'create')
+            ->notEmptyString('reference_number');
+
+        $validator
+            ->scalar('deposit_image')
+            ->maxLength('deposit_image', 500)
+            ->allowEmptyFile('deposit_image');
 
         return $validator;
     }

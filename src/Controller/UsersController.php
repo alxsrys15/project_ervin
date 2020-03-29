@@ -141,4 +141,17 @@ class UsersController extends AppController
     // public function beforeFilter(Event $event){
     //     $this->Auth->allow(['register']);
     // }
+
+    public function register () {
+        $this->layout = 'login';
+        if ($this->request->is('post')) {
+            $data = $this->request->data;
+            $user = $this->Users->newEntity($data);
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Registration success. Please wait for account activation');
+                return $this->redirect(['action' => 'login']);
+            }
+            $this->Flash->error('Something went wrong');
+        }
+    }
 }
