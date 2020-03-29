@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?= $this->Html->charset() ?>
+<!--     <?= $this->Html->charset() ?> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
       APP SETTINGS
@@ -10,20 +10,20 @@
 
     <?= $this->Html->css(['bootstrap.min.css']) ?>
     <?= $this->Html->css(['mdb.min.css']) ?>
-    <?= $this->Html->css(['mdbbootstrap.min.css']) ?>
+    
     <?= $this->Html->script(['jquery.js']) ?>
     <?= $this->Html->script(['bootstrap.min.js']) ?>
 
-    <?= $this->fetch('meta') ?>
+   <!--  <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <?= $this->fetch('script') ?> -->
 </head>
 <body>
         <!--Navbar-->
         <nav class="navbar navbar-light light-blue lighten-4">
 
           <!-- Navbar brand -->
-          <a class="navbar-brand" href="#">Navbar</a>
+          <a class="navbar-brand" href="#">Welcome</a>
 
           <!-- Collapse button -->
           <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1"
@@ -43,6 +43,10 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">Settings</a>
               </li>
+              <li class="nav-item">
+                <?= $this->Html->link('logout', ['class' => 'nav-link', 'controller' => 'users', 'action' => 'logout']); ?>
+              </li>
+              
             </ul>
             <!-- Links -->
 

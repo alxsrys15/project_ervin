@@ -97,10 +97,10 @@ class UsersTable extends Table
             ->integer('referred_by')
             ->allowEmptyString('referred_by');
 
-        $validator
-            ->integer('user_level')
-            ->requirePresence('user_level', 'create')
-            ->notEmptyString('user_level');
+        // $validator
+        //     ->integer('user_level')
+        //     ->requirePresence('user_level', 'create')
+        //     ->notEmptyString('user_level');
 
         $validator
             ->scalar('referral_link')

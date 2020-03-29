@@ -5,17 +5,13 @@
     <div class="col-sm">
       	<div class="card">
   			<div class="card-body">
-				<h2 class="text-center">Login</h2>
-				<?= $this->Form->create(); ?>
+				<h2 class="text-center">Reset Password</h2>
+				<?= $this->Form->create(null, array('action' => 'resetpassword', 'id' => 'web-form')); ?>
 					<div class="form-group">
-						<?= $this->Form->input('email', array('class' => 'form-control')); ?>
+						<?= $this->Form->input('Users.email', array('class' => 'form-control')); ?>
 					</div>
-					 <div class="form-group">
-						<?= $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
-				    	
-					 </div>
 				    <div class="row" style="margin-left: 235px;">
-						<?= $this->Form->submit('Login', array('class' => 'btn btn-primary')); ?>
+						<?= $this->Form->submit('Reset Password', array('class' => 'btn btn-primary')); ?>
 					</div>
 				<?= $this->Form->end(); ?>
 			</div>
