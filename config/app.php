@@ -203,17 +203,17 @@ return [
      * appropriate file to src/Mailer/Transport. Transports should be named
      * 'YourTransport.php', where 'Your' is the name of the transport.
      */
-    'EmailTransport' => [
+ 'EmailTransport' => [
         'default' => [
-            'className' => MailTransport::class,
+            'className' => 'Smtp',
             /*
              * The following keys are used in SMTP transports:
              */
-            'host' => 'localhost',
-            'port' => 25,
+          //  'host' => 'smtp.hostinger.ph',
+            'port' => 587,
             'timeout' => 30,
-            'username' => null,
-            'password' => null,
+            'username' => 'no-reply@droneclothing.store',
+            'password' => '1iNCJYn0pU',
             'client' => null,
             'tls' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
@@ -232,7 +232,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'you@localhost',
+            // 'from' => 'Drone Clothing Co.',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
