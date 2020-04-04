@@ -5,6 +5,8 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Utility\Security;
 use Cake\Mailer\Email;
+use Ahc\Jwt\JWT;
+use Cake\Auth\DefaultPasswordHasher;
 /**
  * Users Controller
  *
@@ -81,20 +83,39 @@ class UsersController extends AppController
     public function beforeFilter(Event $event){
         parent::beforeFilter($event);
         $this->Auth->allow(['register', 'resetpassword']);
-
     }
 
     public function index()
     {
-        $users = $this->paginate($this->Users);
+        $query = $this->Users->find('all')
+            ->where(['user_level_id' => 2]);
+            // ->order(['created' => 'DESC']);
+        $users = $this->paginate($query);
+        // pr($users);die();
+        $packages = $this->Users->Packages->find('list');
 
-        $this->set(compact('users'));
+        $this->set(compact('users', 'packages'));
     }
 
     public function initialize()
     {
         parent::initialize();
         $this->Auth->allow(['logout']);
+    }
+
+    public function activateUser () {
+        if ($this->request->is('post')) {
+            $user_id = !empty($this->request->data['user_id']) ? $this->request->data['user_id'] : '';
+            if (!empty($user_id)) {
+                $user = $this->Users->get($user_id);
+                $user->status = "Active";
+                $user->package_id = $this->request->data['package_id'];
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('User activated'));
+                }
+            }
+        }
+        return $this->redirect(['controller' => 'Home', 'action' => 'index']);
     }
 
     /**
@@ -104,11 +125,10 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view()
     {
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
+        $user_id = $this->Auth->User('id');
+        $user = $this->Users->get($user_id);
 
         $this->set('user', $user);
     }
@@ -181,13 +201,17 @@ class UsersController extends AppController
         $this->layout = 'login';
         if($this->request->is('post')){
             $user = $this->Auth->identify();
-
             if($user){
-                $this->Auth->setUser($user);
-                return $this->redirect(['action' => 'index']);
+                if ($user['status'] === "Active") {
+                    $this->Auth->setUser($user);
+                    return $this->redirect($this->Auth->redirectUrl());
+                } else {
+                    $this->Flash->error('Account inactive');
+                }
+            } else {
+                $this->Flash->error('Incorrect Login');
             }
-            // Bad Login
-            $this->Flash->error('Incorrect Login');
+            return $this->redirect(['action' => 'login']);
         }
     }
     public function logout()
@@ -220,8 +244,15 @@ class UsersController extends AppController
 
     public function register () {
         $this->layout = 'login';
+        $jwt = new JWT('secret', 'HS256', 3600, 10);
         if ($this->request->is('post')) {
             $data = $this->request->data;
+            
+            if (!empty($this->request->data['ref_link'])) {
+                $ref = $jwt->decode($this->request->data['ref_link']);
+                $this->request->data['referred_by'] = $ref['id'];
+            }
+
             $user = $this->Users->newEntity($data);
             if ($this->Users->save($user)) {
                 $this->Flash->success('Registration success. Please wait for account activation');
@@ -230,11 +261,11 @@ class UsersController extends AppController
             $this->Flash->error('Something went wrong');
         }
     }
-   public function resetpassword() {
+    public function resetpassword() {
         $this->layout = 'login';
         if ($this->request->is('post')) {
             $user = [];
-            $query = $this->Users->find('all', [
+            $query = $this->Users->find('all', [ // query to check if existing yung email sa users table
                 'conditions' => [
                     'email' => $this->request->data['Users']['email']
                 ]
@@ -254,19 +285,65 @@ class UsersController extends AppController
 
             }
         }    
-            // $user = $this->Users->findByEmail($this->request->data(['Users']['email'])->);
-            // if (empty($user)) {
-            //     $this->Session->setflash('Sorry, the username entered was not found.');
-            //      return $this->redirect(['action' => 'resetpassword']);
-            // } else {
-            //     $user = $this->__generatePasswordToken($user);
-            //     if ($this->Users->save($user) && $this->__sendForgotPasswordEmail($user['User']['id'])) {
-            //         $this->Session->setflash('Password reset instructions have been sent to your email address.
-            //             You have 24 hours to complete the request.');
-            //          return $this->redirect(['action' => 'login']);
-            //     }
-            // }
+    }
+    /**
+     * Notifies user their password has changed.
+     * @param $id
+     * @return
+     */
+    function __sendPasswordChangedEmail($id = null) {
+        if (!empty($id)) {
+            $this->User->id = $id;
+            $User = $this->User->read();
+        }
+    }
 
+    public function getReferrals () {
+        $user_id = !isset($this->request->data['user_id']) ? $this->Auth->User('id') : $this->request->data['user_id'];
+
+        $user = $this->Users->get($this->Auth->User('id'));
+
+        $query = $this->Users->find('all', [
+            'conditions' => [
+                'referred_by' => $user_id
+            ]
+        ]);
+        // pr($query);die();
+        $referrals = $this->paginate($query);
+
+        $this->set(compact('referrals', 'user'));
+    }
+
+    public function changePassword () {
+        $user_id = $this->Auth->User('id');
+        $user = $this->Users->get($user_id);
+        $hasher = new DefaultPasswordHasher;
+        if ($this->request->is('post')) {
+            $old_password = $hasher->hash($this->request->data['old_password']);
+            // pr($old_password);
+            // pr($user->password);die();
+            if ($old_password === $user->password) {
+                $user->password = $old_password;
+                if ($this->Users->save($user)) {
+                    $this->Flash->success('Password changed');
+                }
+            } else {
+                $this->Flash->error('Incorrect Password');
+            }
+        }
+
+        $query = $this->Users->find('all', [
+            'condtions' => [
+                'referred_by' => $this->Auth->User('id')
+            ]
+        ]);
+
+        $firstLevelCount = $query->count();
+        $firstLevelIds = [];
+
+        foreach ($query as $referral) {
+            $firstLevelIds[] = $referral->id;
+        }
 
     }
 }

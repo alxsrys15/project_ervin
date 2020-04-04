@@ -1,15 +1,19 @@
+<?php 
+$ref_link = isset($this->request->query['referral']) ? $this->request->query['referral'] : '';
+?>
 <?php $this->Form->templates(['inputContainer' => '{{content}}']) ?>
 <div class="container" style="margin-top: 70px;">
 	<h2>Registration</h2>
-	<?= $this->Form->create(null, ['action' => 'register', 'novalidate']) ?>
+	<?= $this->Form->create(null, ['action' => 'register']) ?>
+    <input type="hidden" name="ref_link" value="<?= $ref_link ?>">
   	<div class="row">
     	<div class="col-sm-6">     
     		<div class="card">
     			<div class="card-body">
     				<h2 class="text-center">Account Information</h2>
     				<div class="form-group">
-    					<?= $this->Form->input('username', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required']) ?>
-    				</div>
+                        <?= $this->Form->input('email', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required']) ?>
+                    </div>
     				<div class="form-group">
     					<?= $this->Form->input('password', ['type' => 'password', 'autocomplete' => 'off', 'class' => 'form-control' ,'required']) ?>
     					<div class="invalid-feedback password-validate">
@@ -35,9 +39,7 @@
     				<div class="form-group">
     					<?= $this->Form->input('last_name', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required']) ?>
     				</div>
-    				<div class="form-group">
-    					<?= $this->Form->input('email', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required']) ?>
-    				</div>
+    				
     				<div class="form-group">
     					<?= $this->Form->input('account_number', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'label' => 'Bank Account Number', 'required']) ?>
     				</div>

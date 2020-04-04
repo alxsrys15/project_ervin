@@ -16,6 +16,7 @@
     <?= $this->fetch('script') ?>
 </head>
 <body>
-        <?= $this->fetch('content') ?>
+    <?= $this->Flash->render() ?>
+    <?= $this->fetch('content') ?>
 </body>
 </html>

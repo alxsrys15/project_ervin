@@ -5,7 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Ahc\Jwt\JWT;
+use Cake\Routing\Router;
 /**
  * Users Model
  *
@@ -38,6 +39,11 @@ class UsersTable extends Table
             'className' => 'Users',
             'foreignKey' => 'referred_by',
             'propertyName' => 'referred_by'
+        ]);
+
+        $this->belongsTo('Packages', [
+            'propertyName' => 'package',
+            'foreignKey' => 'package_id'
         ]);
 
         $this->belongsTo('UserLevels', [
@@ -134,4 +140,28 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+    public function afterSave ($event, $entity) {
+        $jwt = new JWT('secret', 'HS256', 3600, 10);
+        if ($entity->isNew()) {
+            $token = $jwt->encode([
+                'id' => $entity->id,
+                'username' => $entity->username
+            ]);
+
+            $link = Router::url(['controller' => 'Users', 'action' => 'register', '?' => ['referral' => $token]], true);
+
+            $entity->referral_link = $link;
+            if ($this->save($entity)) {
+                
+            }
+        }
+    }
+
+    // public function findAuth (Query $query, array $options) {
+    //     $query->where(['status' => 'Active']);
+
+    //     return $query;
+    // }
+
 }
