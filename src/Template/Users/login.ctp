@@ -10,18 +10,9 @@
 					<div class="form-group">
 						<?= $this->Form->input('email', array('class' => 'form-control')); ?>
 					</div>
-<<<<<<< Updated upstream
-					 <div class="form-group">
-						<?= $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
-				    	<?= $this->Html->link('resetpassword', ['class' => 'nav-link', 'controller' => 'users', 'action' => 'resetpassword']); ?>
-					 </div>
-				    <div class="row" style="margin-left: 235px;">
-						<?= $this->Form->submit('Login', array('class' => 'btn btn-primary')); ?>
-=======
 					<div class="form-group">
-					<?= $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
+						<?= $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
 
->>>>>>> Stashed changes
 					</div>
 					<button type="submit" class="btn btn-primary" style="float: right">LOGIN</button>
 				    
