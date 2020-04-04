@@ -9,7 +9,7 @@
         <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" data-model="captchas" data-method="index" href="#!">Captcha</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="messages-tab" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="index" href="#!">Payout</a>
+        <a class="nav-link" id="messages-tab" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="referralPayout" href="#!">Referral Payout</a>
     </li>
     <?php else: ?>
     <li class="nav-item">

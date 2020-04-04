@@ -340,6 +340,7 @@ class UsersController extends AppController
         $referrals = $this->paginate($query);
 
         $this->set(compact('referrals', 'user'));
+
     }
 
     public function changePassword () {
@@ -357,7 +358,7 @@ class UsersController extends AppController
                 }
             } else {
                 $this->Flash->error('Incorrect Password');
-            }
+            }   
         }
     }
 
