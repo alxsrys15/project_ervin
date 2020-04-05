@@ -148,8 +148,8 @@ class PayoutRequestsController extends AppController
         $prev_sunday = date('Y-m-d', $prev_sunday_stamp);
         $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
 
-        $start_date = $week_start . '00:00:00';
-        $end_date = $prev_sunday . '23:59:59';
+        $start_date = $week_start . ' 00:00:00';
+        $end_date = $prev_sunday . ' 23:59:59';
         //First level referral
         $referralFirst = [];
         $query = $this->Users->find('all') 
@@ -174,7 +174,7 @@ class PayoutRequestsController extends AppController
                 ->where(function ($q) use ($start_date, $end_date) {
                     return $q->between('date_activated', $start_date, $end_date);
                 })
-                ->where(['referred_by' => $this->Auth->User('id')]);
+                ->where(['referred_by IN' => $referralFirstIds]);
             $referralSecond = $query->count();
             $referralSecondIds = [];
 
@@ -192,7 +192,7 @@ class PayoutRequestsController extends AppController
                 ->where(function ($q) use ($start_date, $end_date) {
                      return $q->between('date_activated', $start_date, $end_date);
                 })
-                ->where(['referred_by' => $referralSecondIds]);
+                ->where(['referred_by IN' => $referralSecondIds]);
             $referralThird = $query->count();
             $referralThirdIds = [];
 

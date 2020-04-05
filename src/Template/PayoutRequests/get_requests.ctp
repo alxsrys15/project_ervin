@@ -19,33 +19,37 @@
                 <tbody>
                     <?php if (count($requests) > 0): ?>
                         <?php foreach ($requests as $request): ?>
-                            <td><?= $request->user->first_name . ' ' . $request->user->last_name ?></td>
-                            <td><?= $request->start_date->format('Y-m-d') . ' - ' . $request->end_date->format('Y-m-d') ?></td>
-                            <td><?= $request->referral_count ?></td>
-                            <td><?= $request->referral_count_2 ?></td>
-                            <td><?= $request->referral_count_3 ?></td>
-                            <td><?= $request->total ?></td>
-                            <td>
-                                <?php if ($request->status === "Completed"): ?>
-                                    <?= $request->status ?>
-                                <?php else: ?>
-                                    <?= $this->Form->input('status', [
-                                        'type' => 'select',
-                                        'default' => $request->status,
-                                        'options' => [
-                                            'Pending' => 'Pending',
-                                            'Processing' => 'Processing',
-                                            'Completed' => 'Completed'
-                                        ],
-                                        'id' => 'select-status-'.$request->id,
-                                        'class' => 'custom-select',
-                                        'label' => false
-                                    ]) ?>    
-                                <?php endif ?>   
-                            </td>
-                            <td>
-                                <button class="btn btn-primary btn-sm btn-save-stat" data-request_id="<?= $request->id ?>">Save</button>
-                            </td>
+                            <tr>
+                                <td><?= $request->user->first_name . ' ' . $request->user->last_name ?></td>
+                                <td><?= $request->start_date->format('Y-m-d') . ' - ' . $request->end_date->format('Y-m-d') ?></td>
+                                <td><?= $request->referral_count ?></td>
+                                <td><?= $request->referral_count_2 ?></td>
+                                <td><?= $request->referral_count_3 ?></td>
+                                <td><?= $request->total ?></td>
+                                <td>
+                                    <?php if ($request->status === "Completed"): ?>
+                                        <?= $request->status ?>
+                                    <?php else: ?>
+                                        <?= $this->Form->input('status', [
+                                            'type' => 'select',
+                                            'default' => $request->status,
+                                            'options' => [
+                                                'Pending' => 'Pending',
+                                                'Processing' => 'Processing',
+                                                'Completed' => 'Completed'
+                                            ],
+                                            'id' => 'select-status-'.$request->id,
+                                            'class' => 'custom-select',
+                                            'label' => false
+                                        ]) ?>    
+                                    <?php endif ?>   
+                                </td>
+                                <td>
+                                    <?php if ($request->status !== "Completed"): ?>
+                                    <button class="btn btn-primary btn-sm btn-save-stat" data-request_id="<?= $request->id ?>">Save</button>
+                                    <?php endif ?>
+                                </td>
+                            </tr>
                         <?php endforeach ?>
                     <?php else: ?>
                         <tr>
