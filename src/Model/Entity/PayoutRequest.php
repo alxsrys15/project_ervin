@@ -9,11 +9,12 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property \Cake\I18n\FrozenTime|null $start_date
  * @property \Cake\I18n\FrozenTime|null $end_date
- * @property int|null $captcha_count
  * @property int|null $referral_count
  * @property int|null $total
  * @property int|null $user_id
  * @property string|null $status
+ * @property int|null $referral_count_2
+ * @property int|null $referral_count_3
  *
  * @property \App\Model\Entity\User $user
  */
@@ -31,11 +32,12 @@ class PayoutRequest extends Entity
     protected $_accessible = [
         'start_date' => true,
         'end_date' => true,
-        'captcha_count' => true,
         'referral_count' => true,
         'total' => true,
         'user_id' => true,
         'status' => true,
+        'referral_count_2' => true,
+        'referral_count_3' => true,
         'user' => true,
     ];
 }

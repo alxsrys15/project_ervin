@@ -13,13 +13,13 @@
     </li>
     <?php else: ?>
     <li class="nav-item">
-        <a class="nav-link" id="users-tab" data-toggle="tab" role="tab" aria-controls="settings" aria-selected="false" data-model="users" data-method="index">Users</a>
+        <a class="nav-link" id="users-tab" data-toggle="tab" role="tab" aria-controls="settings" aria-selected="false" data-model="users" data-method="index" href="#!">Users</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="settings-tab" data-toggle="tab" role="tab" aria-controls="settings" aria-selected="false" href="#!" data-model="packages" data-method="index">Packages</a>
     </li>
     <li class="nav-item">
-        <a href="#!" class="nav-link" id="requests-tab" data-model="payout-requests" data-method="getRequests">Payout Requests</a>
+        <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="payout-requests" data-method="getRequests">Payout Requests</a>
     </li>
     <?php endif ?>
     

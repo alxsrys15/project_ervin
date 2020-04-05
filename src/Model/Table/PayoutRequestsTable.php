@@ -62,10 +62,6 @@ class PayoutRequestsTable extends Table
             ->allowEmptyDateTime('end_date');
 
         $validator
-            ->integer('captcha_count')
-            ->allowEmptyString('captcha_count');
-
-        $validator
             ->integer('referral_count')
             ->allowEmptyString('referral_count');
 
@@ -77,6 +73,14 @@ class PayoutRequestsTable extends Table
             ->scalar('status')
             ->maxLength('status', 45)
             ->allowEmptyString('status');
+
+        $validator
+            ->integer('referral_count_2')
+            ->allowEmptyString('referral_count_2');
+
+        $validator
+            ->integer('referral_count_3')
+            ->allowEmptyString('referral_count_3');
 
         return $validator;
     }

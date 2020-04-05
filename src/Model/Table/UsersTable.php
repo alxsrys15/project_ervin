@@ -146,7 +146,6 @@ class UsersTable extends Table
         if ($entity->isNew()) {
             $token = $jwt->encode([
                 'id' => $entity->id,
-                'username' => $entity->username
             ]);
 
             $link = Router::url(['controller' => 'Users', 'action' => 'register', '?' => ['referral' => $token]], true);

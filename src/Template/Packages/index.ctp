@@ -34,7 +34,7 @@
 	</div>
 </div>
 <div class="modal" tabindex="-1" role="dialog" id="addPackageModal">
-    <?= $this->Form->create($package, ['url' => ['controller' => 'Packages', 'action' => 'add']]) ?>
+    <?= $this->Form->create(null, ['url' => ['controller' => 'Packages', 'action' => 'add']]) ?>
     <?= $this->Form->input('user_id', ['type' => 'hidden']) ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">

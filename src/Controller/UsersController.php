@@ -6,6 +6,7 @@ use Cake\Event\Event;
 use Cake\Utility\Security;
 use Ahc\Jwt\JWT;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Routing\Router;
 /**
  * Users Controller
  *
@@ -27,9 +28,11 @@ class UsersController extends AppController
 
     public function index()
     {
-        $query = $this->Users->find('all')
-            ->where(['user_level_id' => 2]);
-            // ->order(['created' => 'DESC']);
+        $query = $this->Users->find('all', [
+            'conditions' => [
+                'user_level_id' => 2
+            ]
+        ]);
         $users = $this->paginate($query);
         // pr($users);die();
         $packages = $this->Users->Packages->find('list');
@@ -186,15 +189,20 @@ class UsersController extends AppController
     public function register () {
         $this->layout = 'login';
         $jwt = new JWT('secret', 'HS256', 3600, 10);
+        $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $data = $this->request->data;
-            
+            $ref = '';
             if (!empty($this->request->data['ref_link'])) {
-                $ref = $jwt->decode($this->request->data['ref_link']);
-                $this->request->data['referred_by'] = $ref['id'];
+                try {
+                    $ref = $jwt->decode($this->request->data['ref_link']);
+                } catch (\Exception $e) {
+                    echo 'expired link';
+                }
             }
 
-            $user = $this->Users->newEntity($data);
+            $user = $this->Users->patchEntity($user, $data);
+            $user->referred_by = !empty($ref) ? $ref['id'] : 0;
             if ($this->Users->save($user)) {
                 $this->Flash->success('Registration success. Please wait for account activation');
                 return $this->redirect(['action' => 'login']);
@@ -333,7 +341,8 @@ class UsersController extends AppController
 
         $query = $this->Users->find('all', [
             'conditions' => [
-                'referred_by' => $user_id
+                'referred_by' => $user_id,
+                'status' => 'Active'
             ]
         ]);
         // pr($query);die();
@@ -361,5 +370,4 @@ class UsersController extends AppController
             }   
         }
     }
-
 }
