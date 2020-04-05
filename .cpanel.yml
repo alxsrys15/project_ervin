@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/user/public_html/
-    - /repos -R captchaph $DEPLOYPATH
+    - /bin/cp -r * $DEPLOYPATH
