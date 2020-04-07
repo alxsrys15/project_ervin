@@ -41,7 +41,17 @@ class UsersTable extends Table
             'propertyName' => 'referred_by'
         ]);
 
-        $this->belongsTo('Packages', [
+        $this->hasMany('UserPackages', [
+            'foreignKey' => 'user_id'
+        ]);
+
+        $this->belongsToMany('Packages', [
+            'propertyName' => 'packages',
+            'joinTable' => 'user_packages' 
+        ]);
+
+        $this->belongsTo('Package', [
+            'className' => 'Packages',
             'propertyName' => 'package',
             'foreignKey' => 'package_id'
         ]);
