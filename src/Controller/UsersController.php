@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Mailer\Email;
 use Cake\Event\Event;
 use Cake\Utility\Security;
 use Ahc\Jwt\JWT;
@@ -47,18 +48,38 @@ class UsersController extends AppController
     }
 
     public function activateUser () {
-        if ($this->request->is('post')) {
-            $user_id = !empty($this->request->data['user_id']) ? $this->request->data['user_id'] : '';
-            if (!empty($user_id)) {
-                $user = $this->Users->get($user_id);
-                $user->status = "Active";
-                $user->package_id = $this->request->data['package_id'];
-                $user->date_activated = date('Y-m-d H:i:s');
-                if ($this->Users->save($user)) {
-                    $this->Flash->success(__('User activated'));
+        $string = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*';
+        $string_shuffled = str_shuffle($string);
+        $password = substr($string_shuffled, 1, 6);
+        $password = base64_encode($password);   
+        $id = $this->request->getData('user_id');
+        $data = [
+                'user_id' => $id,
+                'activation_code' => $password
+            ];
+        $this->loadModel('UserPackages');   
+        $user_packages = $this->UserPackages->newEntity($data);
+        if (!empty($id)) {
+            if($this->request->is('post')){
+                $data = $this->UserPackages->patchEntity($user_packages, $this->request->getData());
+                if($this->UserPackages->save($user_packages)){
+                    $user = $this->Users->get($id);
+                    $user_packages->activation_code = $password;
+                    // $email = new Email();
+                    // $email
+                    //     ->template('otp_password_request', 'default')
+                    //     ->subject('OTP Code Request - DO NOT REPLY')
+                    //     ->emailFormat('html')
+                    //     ->setViewVars(['user' => $user,
+                    //                    'password' => $password])
+                    //     ->from('activation@captcha.ph')
+                    //     ->to($user->email)
+                    //     ->send();
+                    $this->Flash->success(__('The user package has been saved.'));
+                    return $this->redirect(['controller' => 'Home', 'action' => 'index']);
                 }
             }
-        }
+        }    
         return $this->redirect(['controller' => 'Home', 'action' => 'index']);
     }
 
@@ -292,47 +313,25 @@ class UsersController extends AppController
      * @return
      */
     function __sendForgotPasswordEmail($id = null) {
+        $id = $this->request->getData('user_id');
         if (!empty($id)) {
-            $this->User->id = $id;
-            $User = $this->User->read();
-
-            $this->Email->to        = ['Users']['email'];
-            $this->Email->subject   = 'Password Reset Request - DO NOT REPLY';
-            $this->Email->replyTo   = 'do-not-reply@example.com';
-            $this->Email->from      = 'Do Not Reply <do-not-reply@example.com>';
-            $this->Email->template  = 'reset_password_request';
-            $this->Email->sendAs    = 'both';
-            $this->set('Users', $User);
-            $this->Email->send();
+            $user = $this->Users->get($id);
+            $email = new Email();
+            $email
+                ->template('reset_password_request', 'default')
+                ->subject('OTP Code Request - DO NOT REPLY')
+                ->emailFormat('html')
+                ->setViewVars(['user' => $user,
+                               'password' => $password])
+                ->from('activation@captcha.ph')
+                ->to($user->email)
+                ->send();
 
             return true;
         }
         return false;
     }
 
-    /**
-     * Notifies user their password has changed.
-     * @param $id
-     * @return
-     */
-    function __sendPasswordChangedEmail($id = null) {
-        if (!empty($id)) {
-            $this->User->id = $id;
-            $User = $this->User->read();
-
-            $this->Email->to        = $User['User']['email'];
-            $this->Email->subject   = 'Password Changed - DO NOT REPLY';
-            $this->Email->replyTo   = 'do-not-reply@example.com';
-            $this->Email->from      = 'Do Not Reply <do-not-reply@example.com>';
-            $this->Email->template  = 'password_reset_success';
-            $this->Email->sendAs    = 'both';
-            $this->set('User', $User);
-            $this->Email->send();
-
-            return true;
-        }
-        return false;
-    }
 
     public function getReferrals () {
         $user_id = !isset($this->request->data['user_id']) ? $this->Auth->User('id') : $this->request->data['user_id'];
@@ -369,5 +368,9 @@ class UsersController extends AppController
                 $this->Flash->error('Incorrect Password');
             }   
         }
+    }
+    public function newpassword()
+    {
+        return $this->redirect(['action' => 'resetpassword']);
     }
 }

@@ -12,7 +12,8 @@
 					</div>
 					<div class="form-group">
 						<?= $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
-
+						<?= $this->Html->link('Forgot password?',  ['controller' => 'Users', 'action' => 'newpassword', '_full' => true]
+); ?>
 					</div>
 					<button type="submit" class="btn btn-primary" style="float: right">LOGIN</button>
 				    
@@ -24,4 +25,3 @@
     </div>
   </div>
 </div>
-
