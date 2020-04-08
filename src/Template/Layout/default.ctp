@@ -142,7 +142,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
     </style>
 </head>
 <body>
-  <div class="loading" id="blocker" style="display: none">Loading&#8230;</div>
+  <div class="loading" id="blocker" style="display: none, z-index: 1005">Loading&#8230;</div>
+  
         <!--Navbar-->
         <nav class="navbar navbar-light light-blue lighten-4">
 
@@ -174,10 +175,35 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
           <!-- Collapsible content -->
 
         </nav>
+        <?php if ($this->request->session()->read('Auth.User.status') === "Inactive"): ?>
+          <div class="alert alert-danger" role="alert">
+            Your account is inactive. Please click <a href="#!" data-toggle="modal" data-target="#activationModal">here</a> to activate your account.
+          </div>
+        <?php endif ?>
         <!--/.Navbar-->
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
-
+        <div class="modal" tabindex="-1" role="dialog" id="activationModal">
+          <?= $this->Form->create(null, ['url' => ['controller' => 'Users', 'action' => 'selfActivation']]) ?>
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Activate account</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <?= $this->Form->input('activation_code', ['type' => 'text', 'class' => 'form-control']) ?>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Activate</button>
+                  </div>
+              </div>
+          </div>
+          <?= $this->Form->end() ?>
+        </div>
     <script type="text/javascript">
         var url = '<?= $this->Url->build('/', true); ?>';
         var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;

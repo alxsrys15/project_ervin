@@ -8,6 +8,7 @@ use Cake\Utility\Security;
 use Ahc\Jwt\JWT;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Routing\Router;
+
 /**
  * Users Controller
  *
@@ -24,7 +25,7 @@ class UsersController extends AppController
      */
     public function beforeFilter(Event $event){
         parent::beforeFilter($event);
-        $this->Auth->allow(['register', 'resetpassword']);
+        $this->Auth->allow(['register', 'resetpassword', 'testEmail']);
     }
 
     public function index()
@@ -61,10 +62,7 @@ class UsersController extends AppController
         $user_packages = $this->UserPackages->newEntity($data);
         if (!empty($id)) {
             if($this->request->is('post')){
-                $data = $this->UserPackages->patchEntity($user_packages, $this->request->getData());
-                if($this->UserPackages->save($user_packages)){
-                    $user = $this->Users->get($id);
-                    $user_packages->activation_code = $password;
+                if($user = $this->UserPackages->save($user_packages)){
                     // $email = new Email();
                     // $email
                     //     ->template('otp_password_request', 'default')
@@ -167,12 +165,8 @@ class UsersController extends AppController
         if($this->request->is('post')){
             $user = $this->Auth->identify();
             if($user){
-                if ($user['status'] === "Active") {
-                    $this->Auth->setUser($user);
-                    return $this->redirect($this->Auth->redirectUrl());
-                } else {
-                    $this->Flash->error('Account inactive');
-                }
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error('Incorrect Login');
             }
@@ -372,5 +366,57 @@ class UsersController extends AppController
     public function newpassword()
     {
         return $this->redirect(['action' => 'resetpassword']);
+    }
+
+    public function getPackages () {
+        $user_id = $this->Auth->User('id');
+        if ($user_id) {
+            $user_packages = $this->Users->UserPackages->find('all', [
+                'conditions' => [
+                    'user_id' => $user_id
+                ],
+                'contain' => [
+                    'Packages'
+                ]
+            ]);
+
+            $packages = $this->Users->Packages->find('list');
+
+            $user_packages = $this->paginate($user_packages);
+
+            // pr($user_packages);die();
+
+            $this->set(compact('packages', 'user_packages'));
+        }
+    }
+
+    public function selfActivation () {
+        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $data = $this->request->data;
+            $user = $this->Users->get($this->Auth->User('id'));
+
+            $query = $this->Users->UserPackages->find('all', [
+                'conditions' => [
+                    'activation_code' => $data['activation_code']
+                ]
+            ]);
+            $user_package = [];
+            if ($query->first()) {
+                $user_package = $query->first();
+                if ($user_package->is_used) {
+                    $this->Flash->error(__('Invalid activation code'));
+                } else {
+                    $user->status = "Active";
+                    $user_package->is_used = 1;
+                    $s = $this->Users->save($user);
+                    $this->Auth->setUser($s);
+                    $this->Users->UserPackages->save($user_package);
+                    $this->Flash->success(__('Account activated'));
+                }
+                return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+            }
+            
+        }
     }
 }

@@ -33,11 +33,12 @@ class PackagesController extends AppController
      */
     public function view($id = null)
     {
-        $package = $this->Packages->get($id, [
-            'contain' => ['Users'],
-        ]);
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            $package = $this->Packages->get($id);
 
-        $this->set('package', $package);
+            echo json_encode($package);
+        }
     }
 
     /**

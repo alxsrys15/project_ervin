@@ -209,11 +209,11 @@ return [
             /*
              * The following keys are used in SMTP transports:
              */
-          //  'host' => 'smtp.hostinger.ph',
+            'host' => 'smtpout.asia.secureserver.net',
             'port' => 587,
             'timeout' => 30,
-            'username' => 'no-reply@droneclothing.store',
-            'password' => '1iNCJYn0pU',
+            'username' => 'activation@captcha.ph',
+            'password' => 'Vengeance123!',
             'client' => null,
             'tls' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
@@ -264,7 +264,7 @@ return [
              */
             //'port' => 'non_standard_port_number',
             'username' => 'production',
-            'password' => 'Vengeance123!',
+            'password' => 'Captcha123!',
             'database' => 'captcha_ph_test',
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).

@@ -203,7 +203,7 @@ class PayoutRequestsController extends AppController
             $referralThird = 0;
         }
         $user = $this->Users->get($this->Auth->User('id'), [
-         'contain' => ['Packages']
+         'contain' => ['Package']
         ]);
 
       
