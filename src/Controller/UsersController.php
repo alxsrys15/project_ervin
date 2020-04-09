@@ -54,9 +54,11 @@ class UsersController extends AppController
         $password = substr($string_shuffled, 1, 6);
         $password = base64_encode($password);   
         $id = $this->request->getData('user_id');
+        // pr($this->request->data);die();
         $data = [
                 'user_id' => $id,
-                'activation_code' => $password
+                'activation_code' => $password,
+                'package_id' => $this->request->getData('package_id')
             ];
         $this->loadModel('UserPackages');   
         $user_packages = $this->UserPackages->newEntity($data);
@@ -217,7 +219,8 @@ class UsersController extends AppController
             }
 
             $user = $this->Users->patchEntity($user, $data);
-            $user->referred_by = !empty($ref) ? $ref['id'] : 0;
+            $user->referred_by = !empty($ref) ? $ref['id'] : null;
+            // pr($user);die();
             if ($this->Users->save($user)) {
                 $this->Flash->success('Registration success. Please wait for account activation');
                 return $this->redirect(['action' => 'login']);
@@ -383,7 +386,7 @@ class UsersController extends AppController
             $packages = $this->Users->Packages->find('list');
 
             $user_packages = $this->paginate($user_packages);
-
+            // pr($user_packages);die();
             // pr($user_packages);die();
 
             $this->set(compact('packages', 'user_packages'));
@@ -408,6 +411,8 @@ class UsersController extends AppController
                     $this->Flash->error(__('Invalid activation code'));
                 } else {
                     $user->status = "Active";
+                    $user->date_activated = date('Y-m-d H:i:s');
+                    $user->package_id = $user_package->package_id;
                     $user_package->is_used = 1;
                     $s = $this->Users->save($user);
                     $this->Auth->setUser($s);

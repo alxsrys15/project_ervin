@@ -19,6 +19,7 @@
 				<tbody>
 					<?php if (count($packages->toArray()) > 0): ?>
 						<?php foreach ($user_packages as $package): ?>
+						
 						<tr>
 							<td><?= $package->package->name ?></td>
 							<td><?= $package->activation_code ?></td>

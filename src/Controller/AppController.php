@@ -44,6 +44,10 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
+
+        $this->loadComponent('CakeCaptcha.Captcha', [
+            'captchaConfig' => 'ExampleCaptcha'
+        ]);
         
         $this->loadComponent('Flash');
         // Existing code

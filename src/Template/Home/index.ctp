@@ -10,10 +10,13 @@
             <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" data-model="users" data-method="getReferrals" href="#!">My Referrals</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" data-model="captchas" data-method="index" href="#!">Captcha</a>
+            <a class="nav-link" id="captcha-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" data-model="captchas" data-method="index" href="#!">Captcha</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="messages-tab" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="referralPayout" href="#!">Referral Payout</a>
+            <a class="nav-link"data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="referralPayout" href="#!">Referral Payout</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="captcha-payouts" data-method="captchaPayout" href="#!">Captcha Payout</a>
         </li>
         <?php endif ?>
     <?php else: ?>
@@ -27,7 +30,10 @@
         <a href="#!" class="nav-link" data-toggle="tab" role="tab" data-model="package-requests" data-method="index">Package Requests</a>
     </li>
     <li class="nav-item">
-        <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="payout-requests" data-method="getRequests">Payout Requests</a>
+        <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="payout-requests" data-method="getRequests">Referral Payout Requests</a>
+    </li>
+    <li class="nav-item">
+        <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="captcha-payouts" data-method="index">Captcha Payout Requests</a>
     </li>
     <?php endif ?>
     
@@ -40,6 +46,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        var params = "<?= !empty($this->request->params['pass']) ? $this->request->params['pass'][0] : ""  ?>";
+        console.log(params == "view");
         $('#myTab a').on('click', function (e) {
             e.preventDefault()
             var model = $(this).data('model');
@@ -64,7 +72,11 @@
             })
         });
 
-        $('#myTab a').first().trigger('click');
+        if (params == "view") {
+            $("#captcha-tab").trigger('click');
+        } else {
+            $('#myTab a').first().trigger('click');
+        }
 
         $(document).on('click', '#pagination a', function () {
             var target = $(this).attr('href');

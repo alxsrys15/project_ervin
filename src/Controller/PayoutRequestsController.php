@@ -163,7 +163,7 @@ class PayoutRequestsController extends AppController
         $referralFirstIds = [];
          
         foreach ($query as $referrals) {
-            $referralFirstIds = $referrals->id;
+            $referralFirstIds[] = $referrals->id;
         }
         
        // Second level referral
@@ -179,7 +179,7 @@ class PayoutRequestsController extends AppController
             $referralSecondIds = [];
 
             foreach ($query as $referrals) {
-                $referralSecondIds = $referrals->id;
+                $referralSecondIds[] = $referrals->id;
             }
         }else{
             $referralSecond = 0;
@@ -197,7 +197,7 @@ class PayoutRequestsController extends AppController
             $referralThirdIds = [];
 
             foreach ($query as $referrals) {
-                $referralThirdIds = $referrals->id;
+                $referralThirdIds[] = $referrals->id;
             }
         }else{
             $referralThird = 0;

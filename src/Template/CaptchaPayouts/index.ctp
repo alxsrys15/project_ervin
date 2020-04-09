@@ -7,13 +7,13 @@
                 <thead>
                     <tr>
                         <th>User</th>
-                        <th>Bank Account #</th>
-                        <th>Bank Name</th>
                         <th>Date Covered</th>
-                        <th>Direct Referral</th>
-                        <th>Level 2 Referral</th>
-                        <th>Level 3 Referral</th>
+                        <th>Self Count</th>
+                        <th>Level 1 Count</th>
+                        <th>Level 2 Count</th>
+                        <th>Level 3 Count</th>
                         <th>Total Amount</th>
+                        <th>User Bank Account#</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -23,13 +23,13 @@
                         <?php foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= $request->user->first_name . ' ' . $request->user->last_name ?></td>
-                                <td><?= $request->user->account_number ?></td>
-                                <td><?= $request->user->bank_name ?></td>
-                                <td><?= $request->start_date->format('Y-m-d') . ' - ' . $request->end_date->format('Y-m-d') ?></td>
-                                <td><?= $request->referral_count ?></td>
-                                <td><?= $request->referral_count_2 ?></td>
-                                <td><?= $request->referral_count_3 ?></td>
+                                <td><?= $request->date_start->format('Y-m-d') . ' - ' . $request->date_end->format('Y-m-d') ?></td>
+                                <td><?= $request->self_count ?></td>
+                                <td><?= $request->first_level_count ?></td>
+                                <td><?= $request->second_level_count / .5 ?></td>
+                                <td><?= $request->third_level_count / .25 ?></td>
                                 <td>P <?= $request->total ?></td>
+                                <td><?= $request->user->account_number ?></td>
                                 <td>
                                     <?php if ($request->status === "Completed"): ?>
                                         <?= $request->status ?>
@@ -86,7 +86,7 @@
             var stat = $('#select-status-' + request_id).val();
             var td = $('#select-status-' + request_id).parent();
             $.ajax({
-                url: url + 'payout-requests/changeStatus',
+                url: url + 'captcha-payouts/changeStatus',
                 headers: {
                     'X-CSRF-Token': csrfToken
                 },

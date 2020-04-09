@@ -10,6 +10,7 @@
 
     <?= $this->Html->css(['bootstrap.min.css']) ?>
     <?= $this->Html->css(['mdb.min.css']) ?>
+    <?= $this->Html->css(captcha_layout_stylesheet_url(), ['inline' => false]) ?>
     
     <?= $this->Html->script(['jquery.js']) ?>
     <?= $this->Html->script(['bootstrap.min.js']) ?>
