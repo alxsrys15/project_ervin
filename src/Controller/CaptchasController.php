@@ -122,9 +122,13 @@ class CaptchasController extends AppController
 
                 if ($query->first()) {
                     $captcha_record = $query->first();
-                    $captcha_record->count += 1;
-                    if ($this->Captchas->save($captcha_record)) {
-                        $this->Flash->success(__('Congratulations! Captcha solved!'));
+                    if ($captcha_record->count < 120) {
+                        $captcha_record->count += 1;
+                        if ($this->Captchas->save($captcha_record)) {
+                            $this->Flash->success(__('Congratulations! Captcha solved!'));
+                        }
+                    } else {
+                        $this->Flash->error(__('You have reached the maximum number of captchas per day'));
                     }
                 } else {
                     $data = [
@@ -136,8 +140,6 @@ class CaptchasController extends AppController
                     $captcha_record = $this->Captchas->newEntity($data);
                     if ($this->Captchas->save($captcha_record)) {
                         $this->Flash->success(__('Congratulations! Captcha solved!'));
-                    } else {
-                        pr($captcha_record);die();
                     }
                 }
                 return $this->redirect(['controller' => 'Home', 'action' => 'index', "view"]);
