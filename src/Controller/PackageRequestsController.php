@@ -22,7 +22,13 @@ class PackageRequestsController extends AppController
         $this->paginate = [
             'contain' => ['Packages', 'Users'],
         ];
-        $packageRequests = $this->paginate($this->PackageRequests, [
+
+        $query = $this->PackageRequests->find('all', [
+            'order' => [
+                'PackageRequests.id' => 'DESC'
+            ]
+        ]);
+        $packageRequests = $this->paginate($query, [
             'limit' => 10
         ]);
         // pr($packageRequests);die();
