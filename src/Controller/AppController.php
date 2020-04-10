@@ -37,6 +37,9 @@ class AppController extends Controller
      *
      * @return void
      */
+
+
+
     public function initialize()
     {
         parent::initialize();
@@ -66,12 +69,16 @@ class AppController extends Controller
                 'controller' => 'Users',
                 'action' => 'login'
             ],
+            'logoutRedirect', [
+                'controller' => 'Users',
+                'action' => 'login'
+            ],
             'loginRedirect' => [
                 'controller' => 'Home',
                 'action' => '/'
-            ]
+            ],
              // If unauthorized, return them to page they were just on
-            // 'unauthorizedRedirect' => $this->referer()
+            'unauthorizedRedirect' => $this->referer()
         ]);
 
         // Allow the display action so our PagesController
