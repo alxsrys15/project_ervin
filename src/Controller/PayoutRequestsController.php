@@ -51,13 +51,13 @@ class PayoutRequestsController extends AppController
     public function add()
     {
         $payoutRequest = $this->PayoutRequests->newEntity();
-        $prev_sunday_stamp = strtotime('previous sunday');
-        $prev_sunday = date('Y-m-d', $prev_sunday_stamp);
-        $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
-
-        $start_date = $week_start . ' 00:00:00';
-        $end_date = $prev_sunday . ' 23:59:59';
+        
         if ($this->request->is('post')) {
+            $friday = !empty($this->request->data['date_start']) ? $this->request->data['date_start'] : date('Y-m-d', strtotime('friday this week'));
+            $prev_sunday = date('Y-m-d', strtotime('-5 days', strtotime($friday)));
+            $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
+            $start_date = $week_start . ' 00:00:00';
+            $end_date = $prev_sunday . ' 23:59:59';
             $checker = $this->PayoutRequests->find('all', [
                 'conditions' => [
                     'start_date' => $start_date,
@@ -144,12 +144,13 @@ class PayoutRequestsController extends AppController
     public function referralPayout(){
         $this->loadModel('Users');
 
-        $prev_sunday_stamp = strtotime('previous sunday');
-        $prev_sunday = date('Y-m-d', $prev_sunday_stamp);
+        $friday = !empty($this->request->data['date']) ? $this->request->data['date'] : date('Y-m-d', strtotime('friday this week'));
+        $prev_sunday = date('Y-m-d', strtotime('-5 days', strtotime($friday)));
         $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
-
         $start_date = $week_start . ' 00:00:00';
         $end_date = $prev_sunday . ' 23:59:59';
+
+        
         //First level referral
         $referralFirst = [];
         $query = $this->Users->find('all') 
@@ -208,9 +209,9 @@ class PayoutRequestsController extends AppController
 
       
         //Compute the referral payout
-        $first =  ($user->package->referral_multiplier) * $referralFirst;
-        $second = ($user->package->referral_multiplier * .5) * $referralSecond;
-        $third = ($user->package->referral_multiplier *.25) * $referralThird;
+        $first =  125 * $referralFirst;
+        $second = 125 * $referralSecond;
+        $third = 125 * $referralThird;
         $total = $first + $second + $third;
         
 

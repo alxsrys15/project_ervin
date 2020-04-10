@@ -1,11 +1,13 @@
-<?php 
-$prev_sunday_stamp = strtotime('previous sunday');
-$prev_sunday = date('Y-m-d', $prev_sunday_stamp);
-$week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
-
+<?php
+$this->Form->templates(['inputContainer' => '{{content}}']);
+$friday = date('Y-m-d', strtotime('friday this week'));
 ?>
 <div style="padding: 10px">
-    <span style="font-weight: bold, font-size: 5rem">Date Covered: <?= $week_start ?> - <?= $prev_sunday ?></span>
+    <div class="row mb-4">
+        <div class="col-sm-4">
+            <?= $this->Form->input('date', ['type' => 'text', 'class' => 'form-control datepicker', 'default' => $friday]) ?>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
@@ -40,6 +42,7 @@ $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
     <?= $this->Form->input('referral_count', ['type' => 'hidden', 'value' => $referralFirst]) ?>
     <?= $this->Form->input('referral_count_2', ['type' => 'hidden', 'value' => $referralSecond]) ?>
     <?= $this->Form->input('referral_count_3', ['type' => 'hidden', 'value' => $referralThird]) ?>
+    <?= $this->Form->input('date_start', ['type' => 'hidden', 'value' => $friday]) ?>
     <?= $this->Form->input('total', ['type' => 'hidden', 'value' => $total]) ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -53,20 +56,47 @@ $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
                 <center> <h1>₱<?= $total ?>.00</h1> </center>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Request</button>
+                <button type="submit" class="btn btn-primary btn-submit">Request</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
             </div>
         </div>  
     </div>
     <?= $this->Form->end() ?>
 </div>
+
 <script type="text/javascript">    
-    $(function () {
-        $("#btnPayout").click(function () {
-            $("#payoutModal").modal("show");
+    $(document).ready(function () {
+        $('.datepicker').datepicker({
+            beforeShowDay: function(date) {
+                return [date.getDay() == 5];
+            },
+            dateFormat: 'yy-mm-dd',
+            onSelect: function (date) {
+                var selected = date;
+                $.ajax({
+                    headers: {
+                        'X-CSRF-Token': csrfToken
+                    },
+                    url: url + 'payout-requests/referralPayout',
+                    type: 'post',
+                    data: {
+                        date: date
+                    },
+                    beforeSend: function () {
+                        $('#blocker').show();
+                    },
+                    success: function (data) {
+                        var date = new Date();
+                        var mydate = new Date(selected);
+                        $('#blocker').hide();
+                        $('#tab-content').html(data);
+                        $('#date-start').val(selected);
+                        if (date < mydate) {
+                            $('.btn-submit').addClass('disabled');
+                        }
+                    }
+                })
+            }
         });
-    });
-    $('#btnClose').on('click', function () {
-      $('#payoutModal').hide();
     });
 </script>
