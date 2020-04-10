@@ -207,7 +207,7 @@ class UsersController extends AppController
 
     public function register () {
         $this->layout = 'login';
-        $jwt = new JWT('secret', 'HS256', 3600, 10);
+        $jwt = new JWT('secret', 'HS256', 86400, 10);
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $data = $this->request->data;
@@ -229,6 +229,8 @@ class UsersController extends AppController
             }
             $this->Flash->error('Something went wrong');
         }
+
+        $this->set(compact('jwt'));
     }
     public function resetpassword() {
         $this->layout = 'login';
@@ -429,5 +431,32 @@ class UsersController extends AppController
             }
             
         }
+    }
+
+    public function generateReferralLink () {
+        $result = [
+            'success' => false,
+            'token' => ''
+        ];
+        $this->autoRender = false;
+        $user_id = $this->Auth->User('id');
+        $user = $this->Users->get($user_id);
+        $jwt = new JWT('secret', 'HS256', 86400, 10);
+        $token = $jwt->encode([
+            'id' => $user_id,
+        ]);
+
+        $link = Router::url(['controller' => 'Users', 'action' => 'register', '?' => ['referral' => $token]], true);
+
+        $user->referral_link = $link;
+        
+        if ($this->Users->save($user)) {
+           $result = [
+                'success' => true,
+                'token' => $link
+           ];
+        }
+
+        echo json_encode($result);
     }
 }

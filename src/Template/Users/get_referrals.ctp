@@ -1,8 +1,12 @@
 <div style="padding: 10px">
+	<p>NOTE: Referral link is valid for only 24 hours.</p>
 	<div class="row">
-		<div class="col-sm-12 form-group">
-			<label for="link">Your Referral link</label>
+		<div class="col-sm-10 form-group">
+			<label class="sr-only" for="link">Referral Link</label>
 			<input type="text" class="form-control" value="<?= $user->referral_link ?>" readonly id="link">
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn-primary btn-generate btn-sm">Generate</button>
 		</div>
 		<div class="col-sm-4">
 			<div class="card">
@@ -52,3 +56,30 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.btn-generate').on('click', function () {
+			if (confirm('Generate new referral link?')) {
+				$.ajax({
+					url: url + 'users/generateReferralLink',
+					dataType: 'json',
+					beforeSend: function () {
+						$('#blocker').show();
+					},
+					success: function (data) {
+						$('#blocker').hide();
+						if (data.success) {
+							$('#link').val(data.token);
+						} else {
+							alert('Something went wrong');
+						}
+					},
+					error: function (err) {
+						('#blocker').hide();
+						alert('Something went wrong');
+					}
+				});
+			}
+		});
+	});
+</script>

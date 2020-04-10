@@ -152,7 +152,7 @@ class UsersTable extends Table
     }
 
     public function afterSave ($event, $entity) {
-        $jwt = new JWT('secret', 'HS256', 3600, 10);
+        $jwt = new JWT('secret', 'HS256', 86400, 10);
         if ($entity->isNew()) {
             $token = $jwt->encode([
                 'id' => $entity->id,
