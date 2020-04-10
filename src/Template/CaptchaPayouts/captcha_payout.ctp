@@ -1,5 +1,10 @@
 <?php $this->Form->templates(['inputContainer' => '<div class="form-group">{{content}}</div>']) ?>
+<?php 
+$dateNow = date('Y-m-d');
+$is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
+?>
 <div style="padding: 10px">
+    <p><b>Note: Payout request is available on 11th and 26th day of the month.</b></p>
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
@@ -8,7 +13,7 @@
                     <p class="card-text" style="font-size: 10rem"><?= $total ?></p>
                 </div>
             </div>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#payoutModal">Request payout</button>
+            <button class="btn btn-primary <?= $is_cutoff ? "" : "disabled" ?>" data-toggle="modal" data-target="#payoutModal">Request payout</button>
         </div>
         <div class="col-sm-8">
             <table class="table">
