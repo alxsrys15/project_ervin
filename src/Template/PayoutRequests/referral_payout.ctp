@@ -93,6 +93,8 @@ $friday = date('Y-m-d', strtotime('friday this week'));
                         $('#date-start').val(selected);
                         if (date < mydate) {
                             $('.btn-submit').addClass('disabled');
+                            $('.btn-submit').addClass('btn-light');
+                            $('.btn-submit').removeClass('btn-primary');
                         }
                     }
                 })

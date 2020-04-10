@@ -83,6 +83,7 @@
             var request_id = $(this).data('request_id');
             var stat = $('#select-status-' + request_id).val();
             var td = $('#select-status-' + request_id).parent();
+            var removeSave = $(this).parent();
             $.ajax({
                 url: url + 'payout-requests/changeStatus',
                 headers: {
@@ -103,6 +104,7 @@
                         alert('Status successfully changed');
                         if (stat === "Completed") {
                             td.html("Completed");
+                            removeSave.html("");
                         }
                     }
                 },
