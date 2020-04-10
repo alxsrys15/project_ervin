@@ -218,4 +218,24 @@ class UsersTable extends Table
         return $referrals;
     }
 
+    public function getUplines ($user_id) {
+        $uplines = [
+            'first' => '',
+            'second' => '',
+            'third' => ''
+        ];
+        $user = $this->get($user_id);
+        if ($user->referred_by) {
+            $uplines['first'] = $user->referred_by;
+            $second_up = $this->get($user->referred_by);
+            if ($second_up->referred_by) {
+                $uplines['second'] = $second_up->referred_by;
+                $third_up = $this->get($second_up->referred_by);
+                if ($third_up->referred_by) {
+                    $uplines['third'] = $third_up->referred_by;
+                }
+            }
+        }
+        return $uplines;
+    }
 }

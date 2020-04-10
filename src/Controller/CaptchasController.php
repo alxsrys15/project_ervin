@@ -109,8 +109,8 @@ class CaptchasController extends AppController
         if ($this->request->is('post')) {
 
             $user_id = $this->Auth->User('id');
-            $referrals = $this->Users->getUserReferrals($user_id);
-
+            $uplines = $this->Users->getUplines($user_id);
+            
             $isHuman = captcha_validate($this->request->data['CaptchaCode']);
             unset($this->request->data['CaptchaCode']);
             $dateNow = date('Y-m-d');
@@ -128,9 +128,9 @@ class CaptchasController extends AppController
                     if ($captcha_record->count < 120) {
                         $captcha_record->count += 1;
                         if ($this->Captchas->save($captcha_record)) {
-                            $this->addCaptchaCount($referrals['first']);
-                            $this->addCaptchaCount($referrals['second']);
-                            $this->addCaptchaCount($referrals['third']);
+                            $this->addCaptchaCount($uplines['first']);
+                            $this->addCaptchaCount($uplines['second']);
+                            $this->addCaptchaCount($uplines['third']);
                             $this->Flash->success(__('Congratulations! Captcha solved!'));
                         }
                     } else {
@@ -155,40 +155,35 @@ class CaptchasController extends AppController
         }
     }
 
-    private function addCaptchaCount ($user_ids) {
+    private function addCaptchaCount ($user_id) {
         $dateNow = date('Y-m-d');
         $existing_records = [];
         $existing_ids = [];
         $non_existing_records = [];
-        if (count($user_ids) > 0) {
+        if (!empty($user_id)) {
             $query = $this->Captchas->find('all', [
                 'conditions' => [
-                    'date' => $dateNow,
-                    'user_id IN' => $user_ids
+                    'user_id' => $user_id,
+                    'date' => $dateNow
                 ]
             ]);
 
-            foreach ($query as $c_record) {
-                if (in_array($c_record->user_id, $user_ids)) { // existing record
-                    if ($c_record->count < 500) {
-                        $c_record->count += 1;
-                        $existing_records[] = $c_record;
-                        $existing_ids[] = $c_record->user_id;
-                    }
+            if ($query->first()) {
+                $captcha_record = $query->first();
+                if ($captcha_record->count < 500) {
+                    $captcha_record->count += 1;
+                    $this->Captchas->save($captcha_record);
                 }
+            } else {
+                $data = [
+                    'user_id' => $user_id,
+                    'date' => $dateNow,
+                    'count' => 1
+                ];
+
+                $captcha_record = $this->Captchas->newEntity($data);
+                $this->Captchas->save($captcha_record);
             }
-            foreach ($user_ids as $id) {
-                if (!in_array($id, $existing_ids)) {
-                    $non_existing_records[] = [
-                        'date' => $dateNow,
-                        'user_id' => $id,
-                        'count' =>  1
-                    ];
-                }
-            }
-            $new_records = $this->Captchas->newEntities($non_existing_records);
-            $this->Captchas->saveMany($existing_records);
-            $this->Captchas->saveMany($new_records);
         }
     }
 }
