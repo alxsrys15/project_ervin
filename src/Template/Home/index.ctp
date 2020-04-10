@@ -18,6 +18,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="captcha-payouts" data-method="captchaPayout" href="#!">Captcha Payout</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="getReports" href="#!">Payout Transactions</a>
+        </li>
         <?php endif ?>
     <?php else: ?>
     <li class="nav-item">

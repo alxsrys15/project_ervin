@@ -236,4 +236,15 @@ class PayoutRequestsController extends AppController
             echo json_encode($return);
         }
     }
+    public function getReports () {
+        $this->loadModel('Users');
+        $requests = $this->PayoutRequests->find('all', [
+            'conditions' => [
+                'user_id' => $this->Auth->User('id')
+            ]
+        ]);
+        $requests = $this->paginate($requests, ['limit' => 10]);
+        // pr($requests);die();
+        $this->set(compact('requests'));
+    }
 }
