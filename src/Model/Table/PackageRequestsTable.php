@@ -43,9 +43,8 @@ class PackageRequestsTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
         ]);
-
         $this->belongsTo('UserPackages', [
-            'foreignKey' => 'package_id'
+            'foreignKey' => 'package_id',
         ]);
     }
 
@@ -70,6 +69,10 @@ class PackageRequestsTable extends Table
             ->scalar('status')
             ->maxLength('status', 45)
             ->allowEmptyString('status');
+
+        $validator
+            ->integer('qty')
+            ->allowEmptyString('qty');
 
         return $validator;
     }

@@ -78,20 +78,25 @@
             $('#myTab a').first().trigger('click');
         }
 
-        $(document).on('click', '#pagination a', function () {
+        $(document).on('click', '.pagination a', function () {
             var target = $(this).attr('href');
             if (!target) return false;
+
             $.ajax({
                 header: {
-                    'X-CSRF-Token': csrfToken,
-                    url: target,
-                    beforeSend: function () {
-                        $('#blocker').show();
-                    },
-                    success: function (data) {
-                        $('#blocker').hide();
-                        $('#tab-content').html(data);
-                    }
+                    'X-CSRF-Token': csrfToken
+                },
+                url: target,
+                type: 'get',
+                beforeSend: function () {
+                    $('#blocker').show();
+                },
+                success: function (data) {
+                    $('#blocker').hide();
+                    $('#tab-content').html(data);
+                },
+                error: function (err) {
+                    console.log(err.responseText);
                 }
             });
             return false;

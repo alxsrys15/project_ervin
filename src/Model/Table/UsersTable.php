@@ -123,11 +123,11 @@ class UsersTable extends Table
             ->maxLength('referral_link', 255)
             ->allowEmptyString('referral_link');
 
-        $validator
-            ->scalar('reference_number')
-            ->maxLength('reference_number', 255)
-            ->requirePresence('reference_number', 'create')
-            ->notEmptyString('reference_number');
+        // $validator
+        //     ->scalar('reference_number')
+        //     ->maxLength('reference_number', 255)
+        //     ->requirePresence('reference_number', 'create')
+        //     ->notEmptyString('reference_number');
 
         $validator
             ->scalar('deposit_image')
@@ -172,5 +172,50 @@ class UsersTable extends Table
 
     //     return $query;
     // }
+
+    public function getUserReferrals ($user_id) {
+        $referrals = [
+            'first' => [],
+            'second' => [],
+            'third' => []
+        ];
+
+        $query = $this->find('all', [ //first level
+            'conditions' => [
+                'referred_by' => $user_id
+            ]
+        ]);
+
+        if ($query->count() > 0) {
+            foreach ($query as $user) {
+                $referrals['first'][] = $user->id;
+            }
+            $query = $this->find('all', [ //second level
+                'conditions' => [
+                    'referred_by IN' => $referrals['first']
+                ]
+            ]);
+
+            if ($query->count() > 0) {
+                foreach ($query as $user) {
+                    $referrals['second'][] = $user->id;
+                }
+
+                $query = $this->find('all', [
+                    'conditions' => [
+                        'referred_by IN' => $referrals['second']
+                    ]
+                ]);
+
+                if ($query->count() > 0) {
+                    foreach ($query as $user) {
+                        $referrals['third'][] = $user->id;
+                    }
+                }
+            }
+        }
+
+        return $referrals;
+    }
 
 }

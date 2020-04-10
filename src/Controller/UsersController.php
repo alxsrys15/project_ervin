@@ -35,8 +35,10 @@ class UsersController extends AppController
                 'user_level_id' => 2
             ]
         ]);
-        $users = $this->paginate($query);
-        // pr($users);die();
+        $users = $this->paginate($query, [
+            'limit' => 10
+        ]);
+        
         $packages = $this->Users->Packages->find('list');
 
         $this->set(compact('users', 'packages'));
@@ -342,7 +344,7 @@ class UsersController extends AppController
             ]
         ]);
         // pr($query);die();
-        $referrals = $this->paginate($query);
+        $referrals = $this->paginate($query, ['limit' => 10]);
 
         $this->set(compact('referrals', 'user'));
 
@@ -383,9 +385,13 @@ class UsersController extends AppController
                 ]
             ]);
 
-            $packages = $this->Users->Packages->find('list');
+            $packages = $this->Users->Packages->find('list', [
+                'conditions' => [
+                    'is_active' => 1
+                ]
+            ]);
 
-            $user_packages = $this->paginate($user_packages);
+            $user_packages = $this->paginate($user_packages, ['limit' => 10]);
             // pr($user_packages);die();
             // pr($user_packages);die();
 

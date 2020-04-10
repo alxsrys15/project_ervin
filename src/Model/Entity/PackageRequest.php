@@ -11,9 +11,11 @@ use Cake\ORM\Entity;
  * @property int|null $user_id
  * @property string|null $bank_reference
  * @property string|null $status
+ * @property int|null $qty
  *
  * @property \App\Model\Entity\Package $package
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\UserPackage $user_package
  */
 class PackageRequest extends Entity
 {
@@ -31,7 +33,9 @@ class PackageRequest extends Entity
         'user_id' => true,
         'bank_reference' => true,
         'status' => true,
+        'qty' => true,
         'package' => true,
         'user' => true,
+        'user_package' => true,
     ];
 }

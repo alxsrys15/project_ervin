@@ -136,7 +136,7 @@ class PayoutRequestsController extends AppController
                 'Users'
             ]
         ]);
-        $requests = $this->paginate($requests);
+        $requests = $this->paginate($requests, ['limit' => 10]);
         // pr($requests);die();
         $this->set(compact('requests'));
     }

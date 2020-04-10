@@ -8,6 +8,7 @@
 						<th>User</th>
 						<th>Email</th>
 						<th>Deposit Reference #</th>
+						<th>Quantity</th>
 						<th>Status</th>
 						<th>Action</th>
 					</tr>
@@ -20,10 +21,11 @@
 							<td><?= $package->user->first_name . ' ' . $package->user->last_name ?></td>
 							<td><?= $package->user->email ?></td>
 							<td><?= $package->bank_reference ?></td>
+							<td><?= $package->qty ?></td>
 							<td><?= $package->status ?></td>
 							<td>
 								<?php if ($package->status !== "Completed"): ?>
-									<?= $this->Form->postLink('Send activation code', ['controller' => 'PackageRequests', 'action' => 'sendCode', $package->id, $package->user->id, $package->id], ['class' => 'btn btn-primary btn-sm', 'confirm' => 'Send activation code?']) ?>
+									<?= $this->Form->postLink('Send activation code', ['controller' => 'PackageRequests', 'action' => 'sendCode', $package->package->id, $package->user->id, $package->id], ['class' => 'btn btn-primary btn-sm', 'confirm' => 'Send activation code?']) ?>
 								<?php endif ?>
 							</td>
 						</tr>
@@ -39,11 +41,9 @@
                 <div class="col-12">
                     <nav>
                         <ul class="pagination">
-				            <?= $this->Paginator->first() ?>
 				            <?= $this->Paginator->prev('Previous') ?>
-				            <?= $this->Paginator->numbers() ?>
+				            <?= $this->Paginator->numbers(['modulus' => 2]) ?>
 				            <?= $this->Paginator->next('Next') ?>
-				            <?= $this->Paginator->last() ?>
 				        </ul>
                     </nav>
                 </div>

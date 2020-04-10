@@ -8,8 +8,8 @@ return [
 	// 'counterPages'
 	'first' => '<li class="page-item"><a class="page-link" href="{{url}}">{{text}}</a></li>',
 	'last' => '<li class="page-item"><a class="page-link" href="{{url}}">{{text}}</a></li>',
-	'number' => '<li class="page-item"><a class="page-link" href="{{url}}">{{text}}</a></li>'
-	// 'current'
+	'number' => '<li class="page-item"><a class="page-link" href="{{url}}">{{text}}</a></li>',
+	'current' => '<li class="page-item active"><a class="page-link" href="{{url}}">{{text}}</a></li>'
 	// 'ellipsis'
 	// 'sort'
 	// 'sortAsc'

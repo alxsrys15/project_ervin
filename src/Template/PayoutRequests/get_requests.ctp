@@ -66,11 +66,9 @@
                 <div class="col-12">
                     <nav>
                         <ul class="pagination">
-                            <?= $this->Paginator->first() ?>
                             <?= $this->Paginator->prev('Previous') ?>
-                            <?= $this->Paginator->numbers() ?>
+                            <?= $this->Paginator->numbers(['modulus' => 2]) ?>
                             <?= $this->Paginator->next('Next') ?>
-                            <?= $this->Paginator->last() ?>
                         </ul>
                     </nav>
                 </div>

@@ -203,3 +203,11 @@ Type::build('timestamp')
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
+
+function getActivationCode () {
+    $string = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*';
+    $string_shuffled = str_shuffle($string);
+    $password = substr($string_shuffled, 1, 6);
+    $password = base64_encode($password);
+    return $password;
+}

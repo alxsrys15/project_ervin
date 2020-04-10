@@ -22,7 +22,9 @@ class PackageRequestsController extends AppController
         $this->paginate = [
             'contain' => ['Packages', 'Users'],
         ];
-        $packageRequests = $this->paginate($this->PackageRequests);
+        $packageRequests = $this->paginate($this->PackageRequests, [
+            'limit' => 10
+        ]);
         // pr($packageRequests);die();
         $this->set(compact('packageRequests'));
     }
@@ -54,6 +56,7 @@ class PackageRequestsController extends AppController
         $this->request->data['user_id'] = $this->Auth->User('id');
         if ($this->request->is('post')) {
             $packageRequest = $this->PackageRequests->patchEntity($packageRequest, $this->request->getData());
+
             if ($this->PackageRequests->save($packageRequest)) {
                 $this->Flash->success(__('The package request has been saved.'));
 
@@ -112,20 +115,19 @@ class PackageRequestsController extends AppController
 
     public function sendCode ($package_id, $user_id, $pr_id) {
         $this->autoRender = false;
-        $string = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*';
-        $string_shuffled = str_shuffle($string);
-        $password = substr($string_shuffled, 1, 6);
-        $password = base64_encode($password);
         $pr = $this->PackageRequests->get($pr_id);
         if ($this->request->is('post')) {
-            $data = [
-                'user_id' => $user_id,
-                'package_id' => $package_id,
-                'activation_code' => $password
-            ];
-
-            $user_package = $this->PackageRequests->UserPackages->newEntity($data);
-            if ($this->PackageRequests->UserPackages->save($user_package)) {
+            for ($i=0; $i < $pr->qty; $i++) { 
+                $password = getActivationCode();
+                $data[$i] = [
+                    'user_id' => $user_id,
+                    'package_id' => $package_id,
+                    'activation_code' => $password
+                ];
+            }
+            
+            $saveData = $this->PackageRequests->UserPackages->newEntities($data);
+            if ($this->PackageRequests->UserPackages->saveMany($saveData)) {
                 $pr->status = "Completed";
                 $this->PackageRequests->save($pr);
                 $this->Flash->success(__('Activation code sent'));

@@ -10,8 +10,9 @@
         		<thead>
         			<tr>
         				<th>Package Name</th>
-        				<th>Captcha Fee</th>
         				<th>Referral Fee</th>
+                        <th>Status</th>
+                        <th>Action</th>
         			</tr>
         		</thead>
         		<tbody>
@@ -19,8 +20,15 @@
         				<?php foreach ($packages as $package): ?>
         				<tr>
         					<td><?= $package->name ?></td>
-        					<td><?= $package->captcha_multiplier ?></td>
         					<td><?= $package->referral_multiplier ?></td>
+                            <td><?= $package->is_active ? "Active" : "Inactive" ?></td>
+                            <td>
+                                <?php if ($package->is_active): ?>
+                                    <?= $this->Form->postLink('Deactivate', ['controller' => 'Packages', 'action' => 'activatePackage', $package->id], ['class' => 'btn btn-danger btn-sm', 'confirm' => 'Deactivate package?']) ?>
+                                <?php else: ?>
+                                    <?= $this->Form->postLink('Activate', ['controller' => 'Packages', 'action' => 'activatePackage', $package->id, 1], ['class' => 'btn btn-success btn-sm', 'confirm' => 'Activate package?']) ?>
+                                <?php endif ?>
+                            </td>
         				</tr>
         				<?php endforeach ?>
         			<?php else: ?>
@@ -30,6 +38,17 @@
         			<?php endif ?>
         		</tbody>
         	</table>
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination" id="pagination">
+                            <?= $this->Paginator->prev('Previous') ?>
+                            <?= $this->Paginator->numbers(['modulus' => 2]) ?>
+                            <?= $this->Paginator->next('Next') ?>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
 	</div>
 </div>
@@ -46,7 +65,6 @@
             </div>
             <div class="modal-body">
                 <?= $this->Form->input('name', ['type' => 'text', 'class' => 'form-control', 'required']) ?>
-                <?= $this->Form->input('captcha_multiplier', ['type' => 'number', 'class' => 'form-control', 'required', 'label' => 'Captcha Fee', 'required']) ?>
                 <?= $this->Form->input('referral_multiplier', ['type' => 'number', 'class' => 'form-control', 'required', 'Referral Fee', 'required']) ?>
             </div>
             <div class="modal-footer">

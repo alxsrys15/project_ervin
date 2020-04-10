@@ -143,7 +143,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
     </style>
 </head>
 <body>
-  <div class="loading" id="blocker" style="display: none, z-index: 1005">Loading&#8230;</div>
+  <div class="loading" id="blocker" style="display: none">Loading&#8230;</div>
   
         <!--Navbar-->
         <nav class="navbar navbar-light light-blue lighten-4">
@@ -183,7 +183,9 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         <?php endif ?>
         <!--/.Navbar-->
         <?= $this->Flash->render() ?>
-        <?= $this->fetch('content') ?>
+        <div id="content">
+          <?= $this->fetch('content') ?>
+        </div>
         <div class="modal" tabindex="-1" role="dialog" id="activationModal">
           <?= $this->Form->create(null, ['url' => ['controller' => 'Users', 'action' => 'selfActivation']]) ?>
           <div class="modal-dialog" role="document">

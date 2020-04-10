@@ -43,9 +43,9 @@ $ref_link = isset($this->request->query['referral']) ? $this->request->query['re
     				<div class="form-group">
     					<?= $this->Form->input('account_number', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'label' => 'Bank Account Number', 'required']) ?>
     				</div>
-    				<div class="form-group">
+    				<!-- <div class="form-group">
     					<?= $this->Form->input('reference_number', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required']) ?>
-    				</div>
+    				</div> -->
     				<div class="form-group">
     					<?= $this->Form->input('bank_name', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required']) ?>
     				</div>

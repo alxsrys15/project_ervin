@@ -38,15 +38,13 @@
 					<?php endif ?>
 				</tbody>
 			</table>
-			<div class="row justify-content-center">
+			<div class="row justify-content-center page">
                 <div class="col-12">
                     <nav>
-                        <ul class="pagination">
-				            <?= $this->Paginator->first() ?>
+                        <ul class="pagination" id="pagination">
 				            <?= $this->Paginator->prev('Previous') ?>
-				            <?= $this->Paginator->numbers() ?>
+				            <?= $this->Paginator->numbers(['modulus' => 2]) ?>
 				            <?= $this->Paginator->next('Next') ?>
-				            <?= $this->Paginator->last() ?>
 				        </ul>
                     </nav>
                 </div>

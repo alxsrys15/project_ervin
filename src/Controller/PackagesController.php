@@ -19,7 +19,9 @@ class PackagesController extends AppController
      */
     public function index()
     {
-        $packages = $this->paginate($this->Packages);
+        $packages = $this->paginate($this->Packages, [
+            'limit' => 10
+        ]);
 
         $this->set(compact('packages'));
     }
@@ -103,5 +105,20 @@ class PackagesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function activatePackage ($package_id, $value = 0) {
+        if ($package_id) {
+            $package = $this->Packages->get($package_id);
+            $package->is_active = $value;
+            if ($this->Packages->save($package)) {
+                if ($value) {
+                    $this->Flash->success(__('Package activated'));
+                } else {
+                    $this->Flash->success(__('Package deactivated'));
+                }
+            }
+        }
+        return $this->redirect(['controller' => 'home', 'action' => 'index']);
     }
 }

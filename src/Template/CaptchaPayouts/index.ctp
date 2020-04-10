@@ -8,10 +8,6 @@
                     <tr>
                         <th>User</th>
                         <th>Date Covered</th>
-                        <th>Self Count</th>
-                        <th>Level 1 Count</th>
-                        <th>Level 2 Count</th>
-                        <th>Level 3 Count</th>
                         <th>Total Amount</th>
                         <th>User Bank Account#</th>
                         <th>Status</th>
@@ -24,10 +20,6 @@
                             <tr>
                                 <td><?= $request->user->first_name . ' ' . $request->user->last_name ?></td>
                                 <td><?= $request->date_start->format('Y-m-d') . ' - ' . $request->date_end->format('Y-m-d') ?></td>
-                                <td><?= $request->self_count ?></td>
-                                <td><?= $request->first_level_count ?></td>
-                                <td><?= $request->second_level_count / .5 ?></td>
-                                <td><?= $request->third_level_count / .25 ?></td>
                                 <td>P <?= $request->total ?></td>
                                 <td><?= $request->user->account_number ?></td>
                                 <td>
@@ -66,11 +58,9 @@
                 <div class="col-12">
                     <nav>
                         <ul class="pagination">
-                            <?= $this->Paginator->first() ?>
                             <?= $this->Paginator->prev('Previous') ?>
-                            <?= $this->Paginator->numbers() ?>
+                            <?= $this->Paginator->numbers(['modulus' => 2]) ?>
                             <?= $this->Paginator->next('Next') ?>
-                            <?= $this->Paginator->last() ?>
                         </ul>
                     </nav>
                 </div>

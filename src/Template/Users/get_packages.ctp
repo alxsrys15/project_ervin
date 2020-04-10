@@ -37,11 +37,9 @@
                 <div class="col-12">
                     <nav>
                         <ul class="pagination">
-				            <?= $this->Paginator->first() ?>
 				            <?= $this->Paginator->prev('Previous') ?>
-				            <?= $this->Paginator->numbers() ?>
+				            <?= $this->Paginator->numbers(['modulus' => 2]) ?>
 				            <?= $this->Paginator->next('Next') ?>
-				            <?= $this->Paginator->last() ?>
 				        </ul>
                     </nav>
                 </div>
@@ -63,9 +61,9 @@
                 <?= $this->Form->input('package_id', ['type' => 'select', 'empty' => 'Please select a package', 'options' => $packages, 'label' => 'Please select a package', 'class' => 'custom-select', 'required']) ?>
                 <div>
                 	<p>Package Specifics</p>
-                	<p>Captcha Multiplier: <span class="captcha-multiplier"></span></p>
                 	<p>Referral Multiplier: <span class="referral-multiplier"></span></p>
                 </div>
+                <?= $this->Form->input('qty', ['type' => 'number', 'class' => 'form-control', 'required', 'min' => '1', 'default' => '1']) ?>
                 <?= $this->Form->input('bank_reference', ['type' => 'text', 'class' => 'form-control', 'required', 'label' => 'Deposit Reference #']) ?>
             </div>
             <div class="modal-footer">
@@ -87,7 +85,6 @@
                 url: url + 'packages/view/' + $(this).val(),
                 dataType: 'json',
                 success: function (data) {
-                	$('.captcha-multiplier').text(data.captcha_multiplier);
                 	$('.referral-multiplier').text(data.referral_multiplier);
                 },
                 error: function (err) {

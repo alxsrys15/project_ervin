@@ -26,6 +26,7 @@ class PackageRequestsTableTest extends TestCase
         'app.PackageRequests',
         'app.Packages',
         'app.Users',
+        'app.UserPackages',
     ];
 
     /**

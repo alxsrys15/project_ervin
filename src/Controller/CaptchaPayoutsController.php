@@ -24,7 +24,7 @@ class CaptchaPayoutsController extends AppController
                 'Users'
             ]
         ]);
-        $requests = $this->paginate($query);
+        $requests = $this->paginate($query, ['limit' => 10]);
         // pr($requests);die();
         $this->set(compact('requests'));
     }
@@ -110,152 +110,188 @@ class CaptchaPayoutsController extends AppController
     }
 
     public function captchaPayout () {
-        $this->loadModel('Users');
         $this->loadModel('Captchas');
-        $query = $this->Users->find('all') 
-            ->where(['status' => 'Active'])
-            ->where(['referred_by' => $this->Auth->User('id')]);
-        
-        $referralFirst = $query->count();
-        $referralFirstIds = [];
-        $referralSecondIds = [];
-        $referralThirdIds = [];
-        foreach ($query as $referrals) {
-            $referralFirstIds[] = $referrals->id;
-        }
-        
-       // Second level referral
-        if(count($referralFirstIds) > 0){
-            $referralSecond = [];
-            $query = $this->Users->find('all') 
-                ->where(['status' => 'Active'])
-                ->where(['referred_by IN' => $referralFirstIds]);
-            $referralSecond = $query->count();
-            
-
-            foreach ($query as $referrals) {
-                $referralSecondIds[] = $referrals->id;
-            }
-        }else{
-            $referralSecond = 0;
-        }
-        //Third level referral
-        if(count($referralThirdIds) > 0){
-           $referralThird = [];
-            $query = $this->Users->find('all') 
-                ->where(['status' => 'Active'])
-                ->where(['referred_by IN' => $referralSecondIds]);
-            $referralThird = $query->count();
-            
-
-            foreach ($query as $referrals) {
-                $referralThirdIds[] = $referrals->id;
-            }
-        }else{
-            $referralThird = 0;
-        }
         $eleventh = date('Y-m-11');
         $twentysixth = date('Y-m-d', strtotime('-16 days', strtotime($eleventh)));
         $twelfth = date('Y-m-12');
         $twentyfifth = date('Y-m-d', strtotime('+14 days', strtotime($twelfth)));
         $dateNow = date('Y-m-d');
+        $user_id = $this->Auth->User('id');
+        $total = 0;
         if (($dateNow >= $twentysixth) && ($dateNow <= $eleventh)) {
             $date_start = $twentysixth;
             $date_end = $eleventh;
-            $self_count = 0;
-            $query = $this->Captchas->find('all')
+            $captcha_records = $this->Captchas->find('all')
                 ->where(['user_id' => $this->Auth->User('id')])
                 ->where(function ($q) use ($date_start, $date_end) {
                     return $q->between('date', $date_start, $date_end);
                 });
-            foreach ($query as $c_date) {
-                $self_count += $c_date->count;
+            foreach ($captcha_records as $c_record) {
+                $total += $c_record->count;
             }
-            $first_level_count = 0;
-            if (count($referralFirstIds) > 0) {
-                $query = $this->Captchas->find('all')
-                    ->where(['user_id IN' => $referralFirstIds])
-                    ->where(function ($q) use ($date_start, $date_end) {
-                        return $q->between('date', $date_start, $date_end);
-                    });
-                foreach ($query as $c_date) {
-                    $first_level_count += $c_date->count;
-                }
-            }
-            $second_level_count = 0;
-            if (count($referralSecondIds) > 0) {
-                $query = $this->Captchas->find('all')
-                ->where(['user_id IN' => $$referralSecondIds])
-                    ->where(function ($q) use ($date_start, $date_end) {
-                        return $q->between('date', $date_start, $date_end);
-                    });
-                foreach ($query as $c_date) {
-                    $second_level_count += $c_date->count;
-                }
-            }
-            $third_level_count = 0;
-            if (count($referralThirdIds) > 0) {
-                $query = $this->Captchas->find('all')
-                    ->where(['user_id IN' => $referralThirdIds])
-                    ->where(function ($q) use ($date_start, $date_end) {
-                        return $q->between('date', $date_start, $date_end   );
-                    });
-                foreach ($query as $c_date) {
-                    $third_level_count += $c_date->count;
-                }
-            }
-            $self = $self_count;
-            $first = $first_level_count;
-            $second = $second_level_count * .5;
-            $third = $third_level_count * .25;
-            $total = $self + $first + $second + $third;
         } else {
             $date_start = $twelfth;
             $date_end = $twentyfifth;
-            $self_count = 0;
-            $query = $this->Captchas->find('all')
+            $captcha_records = $this->Captchas->find('all')
                 ->where(['user_id' => $this->Auth->User('id')])
                 ->where(function ($q) use ($date_start, $date_end) {
-                    return $q->between('date', $start_date, $end_date);
+                    return $q->between('date', $date_start, $date_end);
                 });
-            foreach ($query as $c_date) {
-                $self_count += $c_date->count;
+            foreach ($captcha_records as $c_record) {
+                $total += $c_record->count;
             }
-            $first_level_count = 0;
-            $query = $this->Captchas->find('all')
-                ->where(['user_id IN' => $referralFirstIds])
-                ->where(function ($q) use ($date_start, $date_end) {
-                    return $q->between('date', $start_date, $end_date);
-                });
-            foreach ($query as $c_date) {
-                $first_level_count += $c_date->count;
-            }
-            $second_level_count = 0;
-            $query = $this->Captchas->find('all')
-                ->where(['user_id IN' => $$referralSecondIds])
-                ->where(function ($q) use ($date_start, $date_end) {
-                    return $q->between('date', $start_date, $end_date);
-                });
-            foreach ($query as $c_date) {
-                $second_level_count += $c_date->count;
-            }
-            $third_level_count = 0;
-            $query = $this->Captchas->find('all')
-                ->where(['user_id IN' => $referralThirdIds])
-                ->where(function ($q) use ($date_start, $date_end) {
-                    return $q->between('date', $start_date, $end_date);
-                });
-            foreach ($query as $c_date) {
-                $third_level_count += $c_date->count;
-            }
-            $self = $self_count;
-            $first = $first_level_count;
-            $second = $second_level_count * .5;
-            $third = $third_level_count * .25;
-            $total = $self + $first + $second + $third;
         }
-        $this->set(compact('self_count', 'first_level_count', 'second', 'third', 'total', 'date_start', 'date_end'));
+        $captcha_records = $this->paginate($captcha_records, ['limit' => 10]);
+        $this->set(compact('captcha_records', 'total', 'date_start', 'date_end'));
     }
+
+    // public function captchaPayout () {
+    //     $this->loadModel('Users');
+    //     $this->loadModel('Captchas');
+    //     $query = $this->Users->find('all') 
+    //         ->where(['status' => 'Active'])
+    //         ->where(['referred_by' => $this->Auth->User('id')]);
+        
+    //     $referralFirst = $query->count();
+    //     $referralFirstIds = [];
+    //     $referralSecondIds = [];
+    //     $referralThirdIds = [];
+    //     foreach ($query as $referrals) {
+    //         $referralFirstIds[] = $referrals->id;
+    //     }
+        
+    //    // Second level referral
+    //     if(count($referralFirstIds) > 0){
+    //         $referralSecond = [];
+    //         $query = $this->Users->find('all') 
+    //             ->where(['status' => 'Active'])
+    //             ->where(['referred_by IN' => $referralFirstIds]);
+    //         $referralSecond = $query->count();
+            
+
+    //         foreach ($query as $referrals) {
+    //             $referralSecondIds[] = $referrals->id;
+    //         }
+    //     }else{
+    //         $referralSecond = 0;
+    //     }
+    //     //Third level referral
+    //     if(count($referralThirdIds) > 0){
+    //        $referralThird = [];
+    //         $query = $this->Users->find('all') 
+    //             ->where(['status' => 'Active'])
+    //             ->where(['referred_by IN' => $referralSecondIds]);
+    //         $referralThird = $query->count();
+            
+
+    //         foreach ($query as $referrals) {
+    //             $referralThirdIds[] = $referrals->id;
+    //         }
+    //     }else{
+    //         $referralThird = 0;
+    //     }
+    //     $eleventh = date('Y-m-11');
+    //     $twentysixth = date('Y-m-d', strtotime('-16 days', strtotime($eleventh)));
+    //     $twelfth = date('Y-m-12');
+    //     $twentyfifth = date('Y-m-d', strtotime('+14 days', strtotime($twelfth)));
+    //     $dateNow = date('Y-m-d');
+    //     if (($dateNow >= $twentysixth) && ($dateNow <= $eleventh)) {
+    //         $date_start = $twentysixth;
+    //         $date_end = $eleventh;
+    //         $self_count = 0;
+    //         $query = $this->Captchas->find('all')
+    //             ->where(['user_id' => $this->Auth->User('id')])
+    //             ->where(function ($q) use ($date_start, $date_end) {
+    //                 return $q->between('date', $date_start, $date_end);
+    //             });
+    //         foreach ($query as $c_date) {
+    //             $self_count += $c_date->count;
+    //         }
+    //         $first_level_count = 0;
+    //         if (count($referralFirstIds) > 0) {
+    //             $query = $this->Captchas->find('all')
+    //                 ->where(['user_id IN' => $referralFirstIds])
+    //                 ->where(function ($q) use ($date_start, $date_end) {
+    //                     return $q->between('date', $date_start, $date_end);
+    //                 });
+    //             foreach ($query as $c_date) {
+    //                 $first_level_count += $c_date->count;
+    //             }
+    //         }
+    //         $second_level_count = 0;
+    //         if (count($referralSecondIds) > 0) {
+    //             $query = $this->Captchas->find('all')
+    //             ->where(['user_id IN' => $$referralSecondIds])
+    //                 ->where(function ($q) use ($date_start, $date_end) {
+    //                     return $q->between('date', $date_start, $date_end);
+    //                 });
+    //             foreach ($query as $c_date) {
+    //                 $second_level_count += $c_date->count;
+    //             }
+    //         }
+    //         $third_level_count = 0;
+    //         if (count($referralThirdIds) > 0) {
+    //             $query = $this->Captchas->find('all')
+    //                 ->where(['user_id IN' => $referralThirdIds])
+    //                 ->where(function ($q) use ($date_start, $date_end) {
+    //                     return $q->between('date', $date_start, $date_end   );
+    //                 });
+    //             foreach ($query as $c_date) {
+    //                 $third_level_count += $c_date->count;
+    //             }
+    //         }
+    //         $self = $self_count;
+    //         $first = $first_level_count;
+    //         $second = $second_level_count * .5;
+    //         $third = $third_level_count * .25;
+    //         $total = $self + $first + $second + $third;
+    //     } else {
+    //         $date_start = $twelfth;
+    //         $date_end = $twentyfifth;
+    //         $self_count = 0;
+    //         $query = $this->Captchas->find('all')
+    //             ->where(['user_id' => $this->Auth->User('id')])
+    //             ->where(function ($q) use ($date_start, $date_end) {
+    //                 return $q->between('date', $start_date, $end_date);
+    //             });
+    //         foreach ($query as $c_date) {
+    //             $self_count += $c_date->count;
+    //         }
+    //         $first_level_count = 0;
+    //         $query = $this->Captchas->find('all')
+    //             ->where(['user_id IN' => $referralFirstIds])
+    //             ->where(function ($q) use ($date_start, $date_end) {
+    //                 return $q->between('date', $start_date, $end_date);
+    //             });
+    //         foreach ($query as $c_date) {
+    //             $first_level_count += $c_date->count;
+    //         }
+    //         $second_level_count = 0;
+    //         $query = $this->Captchas->find('all')
+    //             ->where(['user_id IN' => $$referralSecondIds])
+    //             ->where(function ($q) use ($date_start, $date_end) {
+    //                 return $q->between('date', $start_date, $end_date);
+    //             });
+    //         foreach ($query as $c_date) {
+    //             $second_level_count += $c_date->count;
+    //         }
+    //         $third_level_count = 0;
+    //         $query = $this->Captchas->find('all')
+    //             ->where(['user_id IN' => $referralThirdIds])
+    //             ->where(function ($q) use ($date_start, $date_end) {
+    //                 return $q->between('date', $start_date, $end_date);
+    //             });
+    //         foreach ($query as $c_date) {
+    //             $third_level_count += $c_date->count;
+    //         }
+    //         $self = $self_count;
+    //         $first = $first_level_count;
+    //         $second = $second_level_count * .5;
+    //         $third = $third_level_count * .25;
+    //         $total = $self + $first + $second + $third;
+    //     }
+    //     $this->set(compact('self_count', 'first_level_count', 'second', 'third', 'total', 'date_start', 'date_end'));
+    // }
 
     public function saveRequest () {
         $this->autoRender = false;
@@ -264,7 +300,7 @@ class CaptchaPayoutsController extends AppController
                 'conditions' => [
                     'date_start' => $this->request->data['date_start'],
                     'date_end' => $this->request->data['date_end'],
-                    'user_id' => $this->request->data['user_id']
+                    'user_id' => $this->Auth->User('id')
                 ]
             ]);
 
@@ -275,7 +311,6 @@ class CaptchaPayoutsController extends AppController
 
             $this->request->data['user_id'] = $this->Auth->User('id');
             $captcha_record = $this->CaptchaPayouts->newEntity($this->request->data);
-            // pr($captcha_record);die();
             if ($this->CaptchaPayouts->save($captcha_record)) {
                 $this->Flash->success(__('Payout request has been saved.'));
             }
