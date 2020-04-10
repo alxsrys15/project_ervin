@@ -213,11 +213,13 @@ class UsersController extends AppController
             $data = $this->request->data;
             $ref = '';
             if (!empty($this->request->data['ref_link'])) {
-                try {
-                    $ref = $jwt->decode($this->request->data['ref_link']);
-                } catch (\Exception $e) {
-                    echo 'expired link';
-                }
+                $payload = explode('.', $this->request->data['ref_link']);
+                $ref = json_decode(base64_decode($payload[1]), true);
+                // try {
+                //     $ref = $jwt->decode($this->request->data['ref_link']);
+                // } catch (\Exception $e) {
+                //     echo 'expired link';
+                // }
             }
 
             $user = $this->Users->patchEntity($user, $data);

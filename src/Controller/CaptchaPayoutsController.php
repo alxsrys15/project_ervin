@@ -333,4 +333,22 @@ class CaptchaPayoutsController extends AppController
             echo json_encode($return);
         }
     }
+
+     public function getReports () {
+        if ($this->request->is(['ajax', 'get'])) {
+            $user_id = $this->Auth->User('id');
+            $query = $this->CaptchaPayouts->find('all', [
+                'conditions' => [
+                    'user_id' => $user_id
+                ],
+                'order' => [
+                    'CaptchaPayouts.id' => 'DESC'
+                ]
+            ]);
+
+            $requests = $this->paginate($query, ['limit' => 10]);
+
+            $this->set(compact('requests'));
+        }
+    }
 }

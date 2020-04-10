@@ -13,7 +13,7 @@ $is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
                     <p class="card-text" style="font-size: 10rem"><?= $total ?></p>
                 </div>
             </div>
-            <button class="btn btn-primary <?= $is_cutoff ? "" : "disabled" ?>" data-toggle="modal" data-target="#payoutModal">Request payout</button>
+            <button class="btn <?= $is_cutoff ? "btn-primary" : "btn-light disabled" ?>" data-toggle="modal" data-target="#payoutModal">Request payout</button>
         </div>
         <div class="col-sm-8">
             <table class="table">

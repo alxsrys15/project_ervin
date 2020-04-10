@@ -6,8 +6,8 @@
             <?= $this->Form->input('transaction_type', [
                 'type' => 'select',
                 'options' => [
-                    'payout-requests' => 'Referrals',
-                    'captcha-payouts' => 'Captcha'
+                    'captcha-payouts' => 'Captcha',
+                    'payout-requests' => 'Referrals'
                 ],
                 'class' => 'custom-select'
             ])  ?>
@@ -27,7 +27,7 @@
                     <?php if (count($requests) > 0): ?>
                         <?php foreach ($requests as $request): ?>
                             <tr>
-                                <td><?= $request->start_date->format('Y-m-d') . ' - ' . $request->end_date->format('Y-m-d') ?></td>
+                                <td><?= $request->date_start->format('Y-m-d') . ' - ' . $request->date_end->format('Y-m-d') ?></td>
                                 <td>P <?= $request->total ?></td>
                                 <td> <?= $request->status ?></td>
                             </tr>

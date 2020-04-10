@@ -1,12 +1,8 @@
 <div style="padding: 10px">
-	<p>NOTE: Referral link is valid for only 24 hours.</p>
 	<div class="row">
-		<div class="col-sm-10 form-group">
+		<div class="col-sm-12 form-group">
 			<label class="sr-only" for="link">Referral Link</label>
 			<input type="text" class="form-control" value="<?= $user->referral_link ?>" readonly id="link">
-		</div>
-		<div class="col-sm-2">
-			<button class="btn btn-primary btn-generate btn-sm">Generate</button>
 		</div>
 		<div class="col-sm-4">
 			<div class="card">

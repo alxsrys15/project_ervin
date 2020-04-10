@@ -103,7 +103,24 @@
                 }
             });
             return false;
-        })
+        });
+
+        $(document).on('change', '#transaction-type', function () {
+            var trans_type = $(this).val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': csrfToken
+                },
+                url: url + trans_type + '/getReports',
+                beforeSend: function () {
+                    $('#blocker').show();
+                },
+                success: function (data) {
+                    $('#blocker').hide();
+                    $('#tab-content').html(data);
+                }
+            })
+        });
     });
 </script>
 

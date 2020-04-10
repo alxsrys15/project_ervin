@@ -1,12 +1,7 @@
 <?php 
 $ref_link = isset($this->request->query['referral']) ? $this->request->query['referral'] : '';
-
 $isExpired = false;
-try {
-    $jwt->decode($ref_link);
-} catch (Exception $e) {
-    $isExpired = true;
-}
+
 ?>
 
 <?php $this->Form->templates(['inputContainer' => '{{content}}']) ?>
