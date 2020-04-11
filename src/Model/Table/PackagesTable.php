@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Packages Model
  *
+ * @property &\Cake\ORM\Association\HasMany $PackageRequests
+ * @property &\Cake\ORM\Association\HasMany $UserPackages
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\Package get($primaryKey, $options = [])
@@ -36,6 +38,12 @@ class PackagesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->hasMany('PackageRequests', [
+            'foreignKey' => 'package_id',
+        ]);
+        $this->hasMany('UserPackages', [
+            'foreignKey' => 'package_id',
+        ]);
         $this->hasMany('Users', [
             'foreignKey' => 'package_id',
         ]);
@@ -60,7 +68,14 @@ class PackagesTable extends Table
 
         $validator
             ->integer('qty')
-            ->allowEmptyString('captcha_multiplier');
+            ->allowEmptyString('qty');
+
+        $validator
+            ->integer('price')
+            ->allowEmptyString('price');
+
+        $validator
+            ->allowEmptyString('is_active');
 
         return $validator;
     }

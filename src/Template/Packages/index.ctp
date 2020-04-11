@@ -87,8 +87,8 @@ $total_active = array_filter($packages->toArray(), function ($e) {
             </div>
             <div class="modal-body">
                 <?= $this->Form->input('name', ['type' => 'text', 'class' => 'form-control', 'required']) ?>
-                <?= $this->Form->input('qty', ['type' => 'number', 'class' => 'form-control', 'required', 'Referral Fee', 'required', 'min' => '1']) ?>
-                <?= $this->Form->input('price', ['type' => 'number', 'class' => 'form-control', 'required', 'Referral Fee', 'required', 'min' => '1']) ?>
+                <?= $this->Form->input('qty', ['type' => 'number', 'class' => 'form-control', 'required', 'min' => '1']) ?>
+                <?= $this->Form->input('price', ['type' => 'number', 'class' => 'form-control', 'required', 'min' => '1']) ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>

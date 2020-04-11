@@ -8,8 +8,9 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string|null $name
- * @property int|null $captcha_multiplier
- * @property int|null $referral_multiplier
+ * @property int|null $qty
+ * @property int|null $price
+ * @property int|null $is_active
  *
  * @property \App\Model\Entity\User[] $users
  */
@@ -26,8 +27,9 @@ class Package extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'captcha_multiplier' => true,
-        'referral_multiplier' => true,
+        'qty' => true,
+        'price' => true,
+        'is_active' => true,
         'users' => true,
     ];
 }
