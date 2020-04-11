@@ -8,7 +8,7 @@ $isExpired = false;
 <div class="container" style="margin-top: 70px;">
 	<?php if (!$isExpired): ?>
     <h2>Registration</h2>
-    <?= $this->Form->create(null, ['action' => 'register']) ?>
+    <?= $this->Form->create() ?>
     <input type="hidden" name="ref_link" value="<?= $ref_link ?>">
     <div class="row">
         <div class="col-sm-6">     

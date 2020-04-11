@@ -1,8 +1,21 @@
 <?php $this->Form->templates(['inputContainer' => '<div class="form-group">{{content}}</div>']) ?>
+<?php 
+$total_active = array_filter($packages->toArray(), function ($e) {
+    if ($e['is_active']) {
+        return $e;
+    }
+});
+?>
 
 <div style="padding: 10px">
 	<div class="row">
 		<div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Active: <?= count($total_active) ?></h5>
+                    <h5 class="card-title">Total Inactive: <?= count($packages) - count($total_active) ?></h5>
+                </div>
+            </div>
             <button class="btn btn-primary" data-toggle="modal" data-target="#addPackageModal">New Package</button>
         </div>
         <div class="col-sm-8">
@@ -10,7 +23,8 @@
         		<thead>
         			<tr>
         				<th>Package Name</th>
-        				<th>Referral Fee</th>
+        				<th>Quantity</th>
+                        <th>Price</th>
                         <th>Status</th>
                         <th>Action</th>
         			</tr>
@@ -20,7 +34,8 @@
         				<?php foreach ($packages as $package): ?>
         				<tr>
         					<td><?= $package->name ?></td>
-        					<td><?= $package->referral_multiplier ?></td>
+        					<td><?= $package->qty ?></td>
+                            <td><?= $package->price ?></td>
                             <td><?= $package->is_active ? "Active" : "Inactive" ?></td>
                             <td>
                                 <?php if ($package->is_active): ?>
@@ -65,7 +80,8 @@
             </div>
             <div class="modal-body">
                 <?= $this->Form->input('name', ['type' => 'text', 'class' => 'form-control', 'required']) ?>
-                <?= $this->Form->input('referral_multiplier', ['type' => 'number', 'class' => 'form-control', 'required', 'Referral Fee', 'required']) ?>
+                <?= $this->Form->input('qty', ['type' => 'number', 'class' => 'form-control', 'required', 'Referral Fee', 'required', 'min' => '1']) ?>
+                <?= $this->Form->input('price', ['type' => 'number', 'class' => 'form-control', 'required', 'Referral Fee', 'required', 'min' => '1']) ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>

@@ -59,12 +59,8 @@ class PackagesTable extends Table
             ->allowEmptyString('name');
 
         $validator
-            ->integer('captcha_multiplier')
+            ->integer('qty')
             ->allowEmptyString('captcha_multiplier');
-
-        $validator
-            ->integer('referral_multiplier')
-            ->allowEmptyString('referral_multiplier');
 
         return $validator;
     }

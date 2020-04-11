@@ -121,9 +121,10 @@ class PackageRequestsController extends AppController
 
     public function sendCode ($package_id, $user_id, $pr_id) {
         $this->autoRender = false;
+        $package = $this->PackageRequests->Packages->get($package_id);
         $pr = $this->PackageRequests->get($pr_id);
         if ($this->request->is('post')) {
-            for ($i=0; $i < $pr->qty; $i++) { 
+            for ($i=0; $i < $package->qty; $i++) { 
                 $password = getActivationCode();
                 $data[$i] = [
                     'user_id' => $user_id,
