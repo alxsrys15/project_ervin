@@ -17,7 +17,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php if (count($packages->toArray()) > 0): ?>
+					<?php if (count($user_packages) > 0): ?>
 						<?php foreach ($user_packages as $package): ?>
 						
 						<tr>

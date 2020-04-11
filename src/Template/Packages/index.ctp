@@ -9,16 +9,23 @@ $total_active = array_filter($packages->toArray(), function ($e) {
 
 <div style="padding: 10px">
 	<div class="row">
-		<div class="col-sm-4">
+        <div class="col-sm-3">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addPackageModal">New Package</button>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Active: <?= count($total_active) ?></h5>
-                    <h5 class="card-title">Total Inactive: <?= count($packages) - count($total_active) ?></h5>
+                    <h5 class="card-title">Active</h5>
+                    <p class="card-text" style="font-size: 10rem"><?= count($total_active) ?></p>
                 </div>
             </div>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#addPackageModal">New Package</button>
+            <br>
+             <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Inactive</h5>
+                    <p class="card-text" style="font-size: 10rem"><?= count($packages) - count($total_active) ?></p>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
         	<table class="table">
         		<thead>
         			<tr>
