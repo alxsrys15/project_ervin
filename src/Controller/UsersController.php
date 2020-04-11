@@ -112,7 +112,14 @@ class UsersController extends AppController
     {
         $user_id = $this->Auth->User('id');
         $user = $this->Users->get($user_id);
-
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Profile updated'));
+            } else {
+                $this->Flash->error(__('Something went wrong'));
+            }
+        }
         $this->set('user', $user);
     }
 
