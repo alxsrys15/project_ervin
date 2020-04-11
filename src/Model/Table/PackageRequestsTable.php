@@ -70,10 +70,6 @@ class PackageRequestsTable extends Table
             ->maxLength('status', 45)
             ->allowEmptyString('status');
 
-        $validator
-            ->integer('qty')
-            ->allowEmptyString('qty');
-
         return $validator;
     }
 

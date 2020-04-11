@@ -8,7 +8,6 @@
 						<th>User</th>
 						<th>Email</th>
 						<th>Deposit Reference #</th>
-						<th>Quantity</th>
 						<th>Status</th>
 						<th>Action</th>
 					</tr>
@@ -21,7 +20,6 @@
 							<td><?= $package->user->first_name . ' ' . $package->user->last_name ?></td>
 							<td><?= $package->user->email ?></td>
 							<td><?= $package->bank_reference ?></td>
-							<td><?= $package->qty ?></td>
 							<td><?= $package->status ?></td>
 							<td>
 								<?php if ($package->status !== "Completed"): ?>
