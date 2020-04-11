@@ -79,8 +79,15 @@ $default = strtotime(date('Y-m-d')) <= strtotime(date('Y-m-12')) ? date('Y-m-12'
                 <center> <h1>₱<?= $total ?>.00</h1> </center>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-submit">Request</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+                <div class="row" style="width:100%;">
+                    <div class="col-sm-12">
+                         <p class="font-italic">Note: We accept Unionbank accounts only.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary btn-submit">Request</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+                </div>
             </div>
         </div>  
     </div>

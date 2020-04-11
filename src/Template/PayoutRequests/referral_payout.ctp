@@ -47,6 +47,7 @@ $friday = date('Y-m-d', strtotime('friday this week'));
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <br>
                 <h5 class="modal-title">Total amount:</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnClose">
                     <span aria-hidden="true">&times;</span>
@@ -56,8 +57,15 @@ $friday = date('Y-m-d', strtotime('friday this week'));
                 <center> <h1>₱<?= $total ?>.00</h1> </center>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-submit">Request</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+                <div class="row" style="width:100%;">
+                    <div class="col-sm-12">
+                         <p class="font-italic">Note: We accept Unionbank accounts only.</p>
+                    </div>
+                </div>
+                 <div class="row">
+                    <button type="submit" class="btn btn-primary btn-submit">Request</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+                </div>
             </div>
         </div>  
     </div>

@@ -319,7 +319,8 @@ class CaptchaPayoutsController extends AppController
                 $query = $this->Captchas->find('all')
                     ->where(function ($q) {
                         return $q->between('date', $this->request->data['date_start'], $this->request->data['date_end']);
-                    });
+                    })
+                    ->where(['user_id' => $this->Auth->User('id')]);
                 $updated_captchas = [];
                 foreach ($query as $c_record) {
                     $c_record->status = "Pending";

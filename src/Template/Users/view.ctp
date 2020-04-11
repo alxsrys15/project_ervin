@@ -10,8 +10,7 @@
                     <?= $this->Form->input('id', ['type' => 'hidden', 'class' => 'form-control']) ?>
                     <?= $this->Form->input('first_name', ['class' => 'form-control']) ?>
                     <?= $this->Form->input('last_name', ['class' => 'form-control']) ?>
-                    <?= $this->Form->input('account_number', ['class' => 'form-control']) ?>
-                    <?= $this->Form->input('bank_name', ['class' => 'form-control']) ?>
+                    <?= $this->Form->input('account_number', ['class' => 'form-control', 'label' => "Unionbank Account Number"]) ?>
                     <?= $this->Form->input('referral_link', ['class' => 'form-control']) ?>
                 </div>
             </div>

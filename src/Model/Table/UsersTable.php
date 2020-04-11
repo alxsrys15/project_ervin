@@ -97,17 +97,17 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
 
-        $validator
-            ->scalar('account_number')
-            ->maxLength('account_number', 255)
-            ->requirePresence('account_number', 'create')
-            ->notEmptyString('account_number');
+        // $validator
+        //     ->scalar('account_number')
+        //     ->maxLength('account_number', 255)
+        //     ->requirePresence('account_number', 'create')
+        //     ->notEmptyString('account_number');
 
-        $validator
-            ->scalar('bank_name')
-            ->maxLength('bank_name', 45)
-            ->requirePresence('bank_name', 'create')
-            ->notEmptyString('bank_name');
+        // $validator
+        //     ->scalar('bank_name')
+        //     ->maxLength('bank_name', 45)
+        //     ->requirePresence('bank_name', 'create')
+        //     ->notEmptyString('bank_name');
 
         $validator
             ->integer('referred_by')
