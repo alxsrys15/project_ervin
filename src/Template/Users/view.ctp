@@ -1,7 +1,7 @@
 <?php $this->Form->templates(['inputContainer' => '<div class="form-group">{{content}}</div>']) ?>
 
 <div class="container" style="margin-top: 70px">
-    <?= $this->Form->create($user) ?>
+    <?= $this->Form->create($user, ['url' => ['controller' => 'Users', 'action' => 'view']]) ?>
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
             <div class="card">
@@ -11,7 +11,6 @@
                     <?= $this->Form->input('first_name', ['class' => 'form-control']) ?>
                     <?= $this->Form->input('last_name', ['class' => 'form-control']) ?>
                     <?= $this->Form->input('account_number', ['class' => 'form-control', 'label' => "Unionbank Account Number"]) ?>
-                    <?= $this->Form->input('referral_link', ['class' => 'form-control']) ?>
                 </div>
             </div>
         </div>
