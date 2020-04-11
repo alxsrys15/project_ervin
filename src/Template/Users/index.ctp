@@ -2,7 +2,22 @@
 
 <div style="padding: 10px">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Active</h5>
+                    <p class="card-text" style="font-size: 10rem"><?= $inactiveUser ?></p>
+                </div>
+            </div>
+            <br>
+             <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Inactive</h5>
+                    <p class="card-text" style="font-size: 10rem"><?= $activeUser ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
             <table class="table">
                 <thead>
                     <tr>

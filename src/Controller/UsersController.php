@@ -38,9 +38,25 @@ class UsersController extends AppController
         $users = $this->paginate($query, [
             'limit' => 10
         ]);
+        $inactiveUser = [];
+        $query = $this->Users->find('all',[
+            'conditions' => [   
+                'status' => 'Active'
+            ]
+        ]);
+        $inactiveUser = $query->count();
+        $activeUser = [];
+        $query = $this->Users->find('all',[
+            'conditions' => [   
+                'status' => 'Inactive'
+            ]
+        ]);
+        $activeUser = $query->count();
+
         
         $packages = $this->Users->Packages->find('list');
-
+        $this->set(compact('inactiveUser', $inactiveUser));
+        $this->set(compact('activeUser', $activeUser));
         $this->set(compact('users', 'packages'));
     }
 
