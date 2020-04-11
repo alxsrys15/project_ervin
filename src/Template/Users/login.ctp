@@ -1,3 +1,4 @@
+<?= date('Y-m-d H:i:s') ?>
 <div class="container" style="margin-top: 30px;">
   <div class="row">
     <div class="col-sm-12 text-center">
