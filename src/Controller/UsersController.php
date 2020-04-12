@@ -376,12 +376,13 @@ class UsersController extends AppController
         $user = $this->Users->get($user_id);
         $hasher = new DefaultPasswordHasher;
         if ($this->request->is('post')) {
-            $old_password = $hasher->hash($this->request->data['old_password']);
-            // pr($old_password);
-            // pr($user->password);die();
-            if ($old_password === $user->password) {
-                $user->password = $old_password;
+            $pass_check = $hasher->check($this->request->data['old_password'], $user->password);
+            if ($pass_check) {
+                $user->password = $this->request->data['new_password'];
                 if ($this->Users->save($user)) {
+                    unset($this->request->data['old_password']);
+                    unset($this->request->data['new_password']);
+                    unset($this->request->data['confirm_password']);
                     $this->Flash->success('Password changed');
                 }
             } else {
