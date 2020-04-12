@@ -65,6 +65,10 @@
                 	<p>Price: <span class="price"></span></p>
                 </div>
                 <?= $this->Form->input('bank_reference', ['type' => 'text', 'class' => 'form-control', 'required', 'label' => 'Deposit Reference #']) ?>
+                
+                <p class="font-italic mb-0">Account name: Captcha Philippines</p>
+				<p class="font-italic mb-0">UnionBank</p>
+				<p class="font-italic mb-0">Account#: 109420320753</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>

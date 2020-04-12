@@ -20,7 +20,7 @@ $default = strtotime(date('Y-m-d')) <= strtotime(date('Y-m-12')) ? date('Y-m-12'
                     <p class="card-text" style="font-size: 10rem"><?= $total ?></p>
                 </div>
             </div>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#payoutModal">Request payout</button>
+            <button class="btn btn-primary btn-submit" data-toggle="modal" data-target="#payoutModal">Request payout</button>
         </div>
         <div class="col-sm-8">
             <table class="table">
