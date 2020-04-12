@@ -91,8 +91,17 @@ $total_active = array_filter($packages->toArray(), function ($e) {
                 <?= $this->Form->input('price', ['type' => 'number', 'class' => 'form-control', 'required', 'min' => '1']) ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <div class="row" style="width:100%;">
+                    <div class="col-sm-12">
+                         <p class="font-italic">Name: Captcha Philippines</p>
+                         <br>
+                         <p class="font-italic">Account#: 109420320753</p>
+                    </div>
+                </div>
+                <div class="row" style="width:100%;">
+                    <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
             </div>
         </div>
     </div>
