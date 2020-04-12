@@ -1,6 +1,9 @@
 <?php $session = $this->request->session()->read('Auth.User') ?>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li nav-item>
+        <a href="#faqs" class="nav-link" data-toggle="tab" data-model="home" data-method="faqs">FAQs</a>
+    </li>
     <?php if ($session['user_level_id'] === 2): ?>
     <li class="nav-item">
         <a href="#!" class="nav-link" id="packages-tab" data-toggle="tab" data-model="users" data-method="getPackages">My packages</a>
@@ -51,28 +54,30 @@
     $(document).ready(function () {
         var params = "<?= !empty($this->request->params['pass']) ? $this->request->params['pass'][0] : ""  ?>";
         console.log(params == "view");
-        $('#myTab a').on('click', function (e) {
-            e.preventDefault()
+        $('#myTab a').on('click', function () {
             var model = $(this).data('model');
             var method = $(this).data('method');
-            $.ajax({
-                headers: {
-                    'X-CSRF-Token': csrfToken
-                },
-                url: url + model + '/' + method,
-                type: 'post',
-                beforeSend: function () {
-                    $('#blocker').show();
-                },
-                success: function (data) {
-                    $('#blocker').hide();
-                    $('#tab-content').html(data);
-                },
-                error: function (err) {
-                    $('#blocker').hide();
-                    console.log(err.responseText);
-                }
-            })
+            $('#tab-content').html("");
+            if (model && method) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-Token': csrfToken
+                    },
+                    url: url + model + '/' + method,
+                    type: 'post',
+                    beforeSend: function () {
+                        $('#blocker').show();
+                    },
+                    success: function (data) {
+                        $('#blocker').hide();
+                        $('#tab-content').html(data);
+                    },
+                    error: function (err) {
+                        $('#blocker').hide();
+                        console.log(err.responseText);
+                    }
+                });
+            }
         });
 
         if (params == "view") {
