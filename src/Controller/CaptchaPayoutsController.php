@@ -22,6 +22,9 @@ class CaptchaPayoutsController extends AppController
         $query = $this->CaptchaPayouts->find('all', [
             'contain' => [
                 'Users'
+            ],
+            'order' => [
+                'CaptchaPayouts.id' => 'DESC'
             ]
         ]);
         $requests = $this->paginate($query, ['limit' => 10]);
@@ -111,36 +114,36 @@ class CaptchaPayoutsController extends AppController
 
     public function captchaPayout () {
         $this->loadModel('Captchas');
-        $eleventh = date('Y-m-11');
-        $twentysixth = date('Y-m-d', strtotime('-16 days', strtotime($eleventh)));
-        $twelfth = date('Y-m-12');
-        $twentyfifth = date('Y-m-d', strtotime('+14 days', strtotime($twelfth)));
-        $dateNow = date('Y-m-d');
-        $user_id = $this->Auth->User('id');
-        $total = 0;
-        if (($dateNow >= $twentysixth) && ($dateNow <= $eleventh)) {
-            $date_start = $twentysixth;
-            $date_end = $eleventh;
-            $captcha_records = $this->Captchas->find('all')
-                ->where(['user_id' => $this->Auth->User('id')])
-                ->where(function ($q) use ($date_start, $date_end) {
-                    return $q->between('date', $date_start, $date_end);
-                });
-            foreach ($captcha_records as $c_record) {
-                $total += $c_record->count;
+        $default = strtotime(date('Y-m-d')) < strtotime(date('Y-m-12'));
+        
+        if (!empty($this->request->data['date'])) {
+            $date_end = date('Y-m-d', strtotime('-1 day', strtotime($this->request->data['date'])));
+            if (strtotime($date_end) == strtotime(date('Y-m-25'))) {
+                $date_start = date('Y-m-12');
+            } else {
+                $date_start = date('Y-m-26', strtotime('previous month', strtotime($date_end)));
             }
         } else {
-            $date_start = $twelfth;
-            $date_end = $twentyfifth;
-            $captcha_records = $this->Captchas->find('all')
-                ->where(['user_id' => $this->Auth->User('id')])
-                ->where(function ($q) use ($date_start, $date_end) {
-                    return $q->between('date', $date_start, $date_end);
-                });
-            foreach ($captcha_records as $c_record) {
-                $total += $c_record->count;
+            if ($default) {
+                $date_end = date('Y-m-11');
+                $date_start = date('Y-m-26', strtotime('previous month', strtotime($date_end)));
+            } else {
+                $date_start = date('Y-m-12');
+                $date_end = date('Y-m-25');
             }
         }
+
+        $user_id = $this->Auth->User('id');
+        $total = 0;
+        $captcha_records = $this->Captchas->find('all')
+            ->where(['user_id' => $this->Auth->User('id')])
+            ->where(function ($q) use ($date_start, $date_end) {
+                return $q->between('date', $date_start, $date_end);
+            });
+        foreach ($captcha_records as $c_record) {
+            $total += $c_record->count;
+        }
+        
         $captcha_records = $this->paginate($captcha_records, ['limit' => 10]);
         $this->set(compact('captcha_records', 'total', 'date_start', 'date_end'));
     }
@@ -295,6 +298,7 @@ class CaptchaPayoutsController extends AppController
 
     public function saveRequest () {
         $this->autoRender = false;
+        $this->loadModel('Captchas');
         if ($this->request->is('post')) {
             $query = $this->CaptchaPayouts->find('all', [
                 'conditions' => [
@@ -312,6 +316,18 @@ class CaptchaPayoutsController extends AppController
             $this->request->data['user_id'] = $this->Auth->User('id');
             $captcha_record = $this->CaptchaPayouts->newEntity($this->request->data);
             if ($this->CaptchaPayouts->save($captcha_record)) {
+                $query = $this->Captchas->find('all')
+                    ->where(function ($q) {
+                        return $q->between('date', $this->request->data['date_start'], $this->request->data['date_end']);
+                    });
+                $updated_captchas = [];
+                foreach ($query as $c_record) {
+                    $c_record->status = "Pending";
+                    $updated_captchas[] = $c_record;
+                }
+                if (count($updated_captchas) > 0) {
+                    $this->Captchas->saveMany($updated_captchas);
+                }
                 $this->Flash->success(__('Payout request has been saved.'));
             }
             return $this->redirect(['controller' => 'Home', 'action' => 'index']);
@@ -320,6 +336,7 @@ class CaptchaPayoutsController extends AppController
 
     public function changeStatus () {
         $this->autoRender = false;
+        $this->loadModel('Captchas');
         if ($this->request->is('ajax')) {
             $return = [
                 'success' => false
@@ -327,6 +344,19 @@ class CaptchaPayoutsController extends AppController
             $request = $this->CaptchaPayouts->get($this->request->data['request_id']);
             $request->status = $this->request->data['status'];
             if ($this->CaptchaPayouts->save($request)) {
+                $query = $this->Captchas->find('all', [
+                    'conditions' => [
+                        'user_id' => $request->user_id
+                    ]
+                ]);
+                $updated_captchas = [];
+                foreach ($query as $c_record) {
+                    $c_record->status = $this->request->data['status'];
+                    $updated_captchas[] = $c_record;
+                }
+                if (count($updated_captchas) > 0) {
+                    $this->Captchas->saveMany($updated_captchas);
+                }
                 $return['success'] = true;
             }
 

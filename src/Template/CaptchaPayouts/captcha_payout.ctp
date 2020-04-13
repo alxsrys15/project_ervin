@@ -1,10 +1,17 @@
 <?php $this->Form->templates(['inputContainer' => '<div class="form-group">{{content}}</div>']) ?>
 <?php 
 $dateNow = date('Y-m-d');
-$is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
+
+$default = strtotime(date('Y-m-d')) <= strtotime(date('Y-m-12')) ? date('Y-m-12') : date('Y-m-26');
+
 ?>
 <div style="padding: 10px">
-    <p><b>Note: Payout request is available on 11th and 26th day of the month.</b></p>
+    <div class="row mb-2">
+        <div class="col-sm-4">
+            <?= $this->Form->input('date', ['type' => 'text', 'class' => 'form-control datepicker', 'default' => $default]) ?>
+        </div>
+    </div>
+    <p style="margin: 0"><?= 'Date covered: ' . date('m/d/Y', strtotime($date_start)) . ' - ' . date('m/d/Y', strtotime($date_end))  ?></p>
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
@@ -13,7 +20,7 @@ $is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
                     <p class="card-text" style="font-size: 10rem"><?= $total ?></p>
                 </div>
             </div>
-            <button class="btn <?= $is_cutoff ? "btn-primary" : "btn-light disabled" ?>" data-toggle="modal" data-target="#payoutModal">Request payout</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#payoutModal">Request payout</button>
         </div>
         <div class="col-sm-8">
             <table class="table">
@@ -21,6 +28,7 @@ $is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
                     <tr>
                         <th>Date</th>
                         <th>Captcha Count</th>
+                        <th>Payment Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,6 +37,7 @@ $is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
                             <tr>
                                 <td><?= $c_record->date->format('Y-m-d') ?></td>
                                 <td><?= $c_record->count ?></td>
+                                <td><?= $c_record->status ?></td>
                             </tr>
                         <?php endforeach ?>
                     <?php else: ?>
@@ -52,6 +61,7 @@ $is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
         </div>
     </div>
 </div>
+
 <div class="modal" tabindex="-1" role="dialog" id="payoutModal">
     <?= $this->Form->create(null,['url' => ['controller' => 'CaptchaPayouts', 'action' => 'saveRequest']]) ?>
     <?= $this->Form->input('total', ['type' => 'hidden', 'value' => $total]) ?>
@@ -69,10 +79,56 @@ $is_cutoff = $dateNow === date('Y-m-11') || $dateNow === date('Y-m-26');
                 <center> <h1>₱<?= $total ?>.00</h1> </center>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Request</button>
+                <button type="submit" class="btn btn-primary btn-submit">Request</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
             </div>
         </div>  
     </div>
     <?= $this->Form->end() ?>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var dateSelected = new Date($('.datepicker').val());
+        var date = new Date();
+        if (date < dateSelected) {
+            $('.btn-submit').addClass('disabled');
+            $('.btn-submit').addClass('btn-light');
+            $('.btn-submit').removeClass('btn-primary');
+        }
+        $('.datepicker').datepicker({
+            beforeShowDay: function(date) {
+                return [date.getDate() == 12 || date.getDate() == 26];
+            },
+            dateFormat: 'yy-mm-dd',
+            onSelect: function (date) {
+                var selected = date;
+                $.ajax({
+                    headers: {
+                        'X-CSRF-Token': csrfToken
+                    },
+                    url: url + 'captcha-payouts/captchaPayout',
+                    type: 'post',
+                    data: {
+                        date: date
+                    },
+                    beforeSend: function () {
+                        $('#blocker').show();
+                    },
+                    success: function (data) {
+                        var date = new Date();
+                        var mydate = new Date(selected);
+                        $('#blocker').hide();
+                        $('#tab-content').html(data);
+                        $('#date').val(selected);
+                        if (date < mydate) {
+                            $('.btn-submit').addClass('disabled');
+                            $('.btn-submit').addClass('btn-light');
+                            $('.btn-submit').removeClass('btn-primary');
+                        }
+                    }
+                })
+            }
+        });
+    });
+</script>

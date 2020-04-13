@@ -22,7 +22,7 @@
                                 <td><?= $request->date_start->format('Y-m-d') . ' - ' . $request->date_end->format('Y-m-d') ?></td>
                                 <td>P <?= $request->total ?></td>
                                 <td><?= $request->user->account_number ?></td>
-                                <td>
+                                <td data-user_id="<?= $request->user_id ?>">
                                     <?php if ($request->status === "Completed"): ?>
                                         <?= $request->status ?>
                                     <?php else: ?>
@@ -75,6 +75,7 @@
             var request_id = $(this).data('request_id');
             var stat = $('#select-status-' + request_id).val();
             var td = $('#select-status-' + request_id).parent();
+            var parent = $(this).parent();
             $.ajax({
                 url: url + 'captcha-payouts/changeStatus',
                 headers: {
@@ -95,6 +96,7 @@
                         alert('Status successfully changed');
                         if (stat === "Completed") {
                             td.html("Completed");
+                            parent.html("");
                         }
                     }
                 },
