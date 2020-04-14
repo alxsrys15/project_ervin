@@ -1,6 +1,6 @@
 <?php
 $this->Form->templates(['inputContainer' => '{{content}}']);
-$friday = date('Y-m-d', strtotime('friday this week'));
+$friday = date('Y-m-d', strtotime('monday this week'));
 ?>
 <div style="padding: 10px">
     <div class="row mb-4">
@@ -76,7 +76,7 @@ $friday = date('Y-m-d', strtotime('friday this week'));
     $(document).ready(function () {
         $('.datepicker').datepicker({
             beforeShowDay: function(date) {
-                return [date.getDay() == 5];
+                return [date.getDay() == 1];
             },
             dateFormat: 'yy-mm-dd',
             onSelect: function (date) {

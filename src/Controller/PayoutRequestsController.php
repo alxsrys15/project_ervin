@@ -144,8 +144,8 @@ class PayoutRequestsController extends AppController
     public function referralPayout(){
         $this->loadModel('Users');
 
-        $friday = !empty($this->request->data['date']) ? $this->request->data['date'] : date('Y-m-d', strtotime('friday this week'));
-        $prev_sunday = date('Y-m-d', strtotime('-5 days', strtotime($friday)));
+        $monday = !empty($this->request->data['date']) ? $this->request->data['date'] : date('Y-m-d', strtotime('monday this week'));
+        $prev_sunday = date('Y-m-d', strtotime('-1 days', strtotime($monday)));
         $week_start = date('Y-m-d', strtotime('-6 days', strtotime($prev_sunday)));
         $start_date = $week_start . ' 00:00:00';
         $end_date = $prev_sunday . ' 23:59:59';
