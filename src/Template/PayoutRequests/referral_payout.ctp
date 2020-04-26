@@ -5,7 +5,7 @@ $friday = date('Y-m-d', strtotime('monday this week'));
 <div style="padding: 10px">
     <div class="row mb-4">
         <div class="col-sm-4">
-            <?= $this->Form->input('date', ['type' => 'text', 'class' => 'form-control datepicker', 'default' => $friday]) ?>
+            <?= $this->Form->input('date', ['type' => 'text', 'class' => 'form-control datepicker', 'default' => $friday, 'readOnly']) ?>
         </div>
     </div>
     <div class="row">
