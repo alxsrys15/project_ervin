@@ -425,7 +425,10 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->data;
             $user = $this->Users->get($this->Auth->User('id'));
-
+            if ($user->status === "Active") {
+                $this->Flash->error(__('Account already activated'));
+                return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+            }
             $query = $this->Users->UserPackages->find('all', [
                 'conditions' => [
                     'activation_code' => $data['activation_code']

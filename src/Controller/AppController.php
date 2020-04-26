@@ -75,10 +75,13 @@ class AppController extends Controller
             ],
             'loginRedirect' => [
                 'controller' => 'Home',
-                'action' => '/'
+                'action' => 'index'
             ],
              // If unauthorized, return them to page they were just on
-            'unauthorizedRedirect' => $this->referer()
+            'unauthorizedRedirect' => [
+                'controller' => 'Home',
+                'action' => 'index'
+            ]
         ]);
 
         // Allow the display action so our PagesController
