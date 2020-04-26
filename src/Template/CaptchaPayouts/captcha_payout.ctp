@@ -8,7 +8,7 @@ $default = strtotime(date('Y-m-d')) <= strtotime(date('Y-m-12')) ? date('Y-m-12'
 <div style="padding: 10px">
     <div class="row mb-2">
         <div class="col-sm-4">
-            <?= $this->Form->input('date', ['type' => 'text', 'class' => 'form-control datepicker', 'default' => $default]) ?>
+            <?= $this->Form->input('date', ['type' => 'text', 'class' => 'form-control datepicker', 'default' => $default, 'readOnly']) ?>
         </div>
     </div>
     <p style="margin: 0"><?= 'Date covered: ' . date('m/d/Y', strtotime($date_start)) . ' - ' . date('m/d/Y', strtotime($date_end))  ?></p>
