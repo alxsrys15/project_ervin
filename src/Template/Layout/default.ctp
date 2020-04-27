@@ -144,7 +144,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 <script type="text/javascript">
       var onloadCallback = function() {
-        alert("grecaptcha is ready!");
+        console.log("grecaptcha is ready!");
       };
     </script>
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
