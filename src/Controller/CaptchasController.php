@@ -106,6 +106,7 @@ class CaptchasController extends AppController
 
     public function solveCaptcha () {
         $this->loadModel('Users');
+        $this->autoRender = false;
         if ($this->request->is('post')) {
 
             $user_id = $this->Auth->User('id');
@@ -155,8 +156,8 @@ class CaptchasController extends AppController
                 return $this->redirect(['controller' => 'Home', 'action' => 'index', "view"]);
             }
             $this->Flash->error(__('Sorry your input is wrong.'));
-            return $this->redirect(['controller' => 'Home', 'action' => 'index', "view"]);
         }
+        return $this->redirect(['controller' => 'Home', 'action' => 'index', "view"]);
     }
 
     private function addCaptchaCount ($user_id) {
