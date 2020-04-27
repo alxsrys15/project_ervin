@@ -191,4 +191,8 @@ class CaptchasController extends AppController
             }
         }
     }
+
+    public function captchaTest () {
+        
+    }
 }

@@ -13,6 +13,7 @@
     <?= $this->Html->css(captcha_layout_stylesheet_url(), ['inline' => false]) ?>
     
     <?= $this->Html->script(['jquery.min.js','bootstrap.min.js', 'jquery-ui.min.js']) ?>
+    
 
    <!--  <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -211,4 +212,5 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         var csrfToken = <?= json_encode($this->request->getParam('_csrfToken')) ?>;
     </script>
     </body>
+    
 </html>
