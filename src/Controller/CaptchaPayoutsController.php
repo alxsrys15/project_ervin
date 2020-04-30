@@ -344,13 +344,17 @@ class CaptchaPayoutsController extends AppController
             ];
             $request = $this->CaptchaPayouts->get($this->request->data['request_id']);
             $request->status = $this->request->data['status'];
+            
+            $date_start = $request->date_start->format('Y-m-d');
+            $date_end = $request->date_end->format('Y-m-d');
             if ($this->CaptchaPayouts->save($request)) {
-                $query = $this->Captchas->find('all', [
-                    'conditions' => [
-                        'user_id' => $request->user_id
-                    ]
-                ]);
+                $query = $this->Captchas->find('all')
+                    ->where(['user_id' => $request->user_id])
+                    ->where(function ($q) use ($date_start, $date_end) {
+                        return $q->between('date', $date_start, $date_end);
+                    });
                 $updated_captchas = [];
+               
                 foreach ($query as $c_record) {
                     $c_record->status = $this->request->data['status'];
                     $updated_captchas[] = $c_record;
