@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * UserInvestments Model
  *
- * @property &\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  *
  * @method \App\Model\Entity\UserInvestment get($primaryKey, $options = [])
  * @method \App\Model\Entity\UserInvestment newEntity($data = null, array $options = [])
@@ -38,6 +38,7 @@ class UserInvestmentsTable extends Table
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
+            'joinType' => 'INNER',
         ]);
     }
 
@@ -60,6 +61,12 @@ class UserInvestmentsTable extends Table
         $validator
             ->integer('amount')
             ->allowEmptyString('amount');
+
+        $validator
+            ->scalar('reference_number')
+            ->maxLength('reference_number', 255)
+            ->requirePresence('reference_number', 'create')
+            ->notEmptyString('reference_number');
 
         return $validator;
     }

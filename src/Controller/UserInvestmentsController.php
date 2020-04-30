@@ -2,6 +2,12 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Mailer\Email;
+use Cake\Event\Event;
+use Cake\Utility\Security;
+use Ahc\Jwt\JWT;
+use Cake\Auth\DefaultPasswordHasher;
+use Cake\Routing\Router;
 
 /**
  * UserInvestments Controller
@@ -24,6 +30,10 @@ class UserInvestmentsController extends AppController
         $this->set(compact('userInvestments'));
     }
 
+    public function beforeFilter(Event $event){
+        parent::beforeFilter($event);
+        $this->Auth->allow(['investments', 'admin_investments']);
+    }
     /**
      * View method
      *
@@ -102,5 +112,53 @@ class UserInvestmentsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function investments(){
+        $userInvestment = $this->UserInvestments->newEntity();
+        if ($this->request->is('post')) {
+            $userInvestment = $this->UserInvestments->patchEntity($userInvestment, $this->request->getData());
+            $userInvestment->user_id = $this->Auth->User('id');
+            $userInvestment->is_active = 'Inactive';
+            if ($this->UserInvestments->save($userInvestment)) {
+                $this->Flash->success(__('The user investment has been saved.'));
+
+                return $this->redirect(['action' => 'investments']);
+            }
+            $this->Flash->error(__('The user investment could not be saved. Please, try again.'));
+        }
+        $this->set(compact('userInvestment'));
+
+        $user_id = !isset($this->request->data['user_id']) ? $this->Auth->User('id') : $this->request->data['user_id'];
+
+        $query = $this->UserInvestments->find('all', [
+            'conditions' => [
+                'user_id' => $user_id
+            ]
+        ]);
+
+        $userInvestments = $this->paginate($query, ['limit' => 10]);
+
+        $this->set(compact('userInvestments', 'userInvestments'));
+    }
+    public function adminInvestments(){
+
+        $userInvestments = $this->UserInvestments->find('all');
+        
+        $this->set(compact('userInvestments', $userInvestments));
+    }
+    public function activateInvestment($userinvestment_id){
+        if ($userinvestment_id) {
+            $userInvesments = $this->UserInvestments->get($userinvestment_id);
+            $userInvesments->is_active = 'Active';
+            if ($this->UserInvestments->save($userInvesments)) {
+                if ('Inactive') {
+                    $this->Flash->success(__('Investment activated'));
+                } else {
+                    $this->Flash->success(__('Investment deactivated'));
+                }
+            }
+        }
+        return $this->redirect(['controller' => 'home', 'action' => 'index']);
     }
 }

@@ -24,6 +24,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="getReports" href="#!">Payout Transactions</a>
         </li>
+        <li class="nav-item">
+            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="user-investments" data-method="investments">Investments</a>
+        </li>
         <?php endif ?>
     <?php else: ?>
     <li class="nav-item">
@@ -40,6 +43,9 @@
     </li>
     <li class="nav-item">
         <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="captcha-payouts" data-method="index">Captcha Payout Requests</a>
+    </li>
+    <li class="nav-item">
+            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="user-investments" data-method="admin-investments">Investments</a>
     </li>
     <?php endif ?>
     

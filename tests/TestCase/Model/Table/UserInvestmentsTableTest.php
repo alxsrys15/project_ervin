@@ -24,6 +24,7 @@ class UserInvestmentsTableTest extends TestCase
      */
     public $fixtures = [
         'app.UserInvestments',
+        'app.Users',
     ];
 
     /**
@@ -66,6 +67,16 @@ class UserInvestmentsTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
