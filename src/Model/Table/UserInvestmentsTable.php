@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Captchas Model
+ * UserInvestments Model
  *
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property &\Cake\ORM\Association\BelongsTo $Users
  *
- * @method \App\Model\Entity\Captcha get($primaryKey, $options = [])
- * @method \App\Model\Entity\Captcha newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Captcha[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Captcha|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Captcha saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Captcha patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Captcha[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Captcha findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\UserInvestment get($primaryKey, $options = [])
+ * @method \App\Model\Entity\UserInvestment newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\UserInvestment[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\UserInvestment|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\UserInvestment saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\UserInvestment patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\UserInvestment[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\UserInvestment findOrCreate($search, callable $callback = null, $options = [])
  */
-class CaptchasTable extends Table
+class UserInvestmentsTable extends Table
 {
     /**
      * Initialize method
@@ -32,9 +32,7 @@ class CaptchasTable extends Table
     {
         parent::initialize($config);
 
-        // $this->addBehavior('Captcha.Captcha', ['field'=>'captcha']);
-
-        $this->setTable('captchas');
+        $this->setTable('user_investments');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -60,8 +58,8 @@ class CaptchasTable extends Table
             ->allowEmptyDate('date');
 
         $validator
-            ->integer('count')
-            ->allowEmptyString('count');
+            ->integer('amount')
+            ->allowEmptyString('amount');
 
         return $validator;
     }

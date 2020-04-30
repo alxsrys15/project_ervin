@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Captchas Model
+ * CommisionRequests Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  *
- * @method \App\Model\Entity\Captcha get($primaryKey, $options = [])
- * @method \App\Model\Entity\Captcha newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Captcha[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Captcha|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Captcha saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Captcha patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Captcha[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Captcha findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\CommisionRequest get($primaryKey, $options = [])
+ * @method \App\Model\Entity\CommisionRequest newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\CommisionRequest[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\CommisionRequest|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\CommisionRequest saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\CommisionRequest patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\CommisionRequest[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\CommisionRequest findOrCreate($search, callable $callback = null, $options = [])
  */
-class CaptchasTable extends Table
+class CommisionRequestsTable extends Table
 {
     /**
      * Initialize method
@@ -32,9 +32,7 @@ class CaptchasTable extends Table
     {
         parent::initialize($config);
 
-        // $this->addBehavior('Captcha.Captcha', ['field'=>'captcha']);
-
-        $this->setTable('captchas');
+        $this->setTable('commision_requests');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -56,12 +54,16 @@ class CaptchasTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->date('date')
-            ->allowEmptyDate('date');
+            ->date('date_start')
+            ->allowEmptyDate('date_start');
 
         $validator
-            ->integer('count')
-            ->allowEmptyString('count');
+            ->date('date_end')
+            ->allowEmptyDate('date_end');
+
+        $validator
+            ->integer('amount')
+            ->allowEmptyString('amount');
 
         return $validator;
     }

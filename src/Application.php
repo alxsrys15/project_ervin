@@ -34,6 +34,9 @@ class Application extends BaseApplication
      */
     public function bootstrap()
     {
+        // $this->addPlugin('Captcha', ['bootstrap' => true, 'routes' => true]);
+
+        // $this->addPlugin('Captcha', ['bootstrap' => true, 'routes' => true]);
         $this->addPlugin('CakeCaptcha', ['routes' => true]);
 
         // Call parent to load bootstrap from files.

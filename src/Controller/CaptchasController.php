@@ -22,6 +22,11 @@ class CaptchasController extends AppController
         
     }
 
+    public function initialize () {
+        parent::initialize();
+        // $this->loadComponent('Captcha.Captcha');
+    }
+
     /**
      * View method
      *
@@ -193,6 +198,6 @@ class CaptchasController extends AppController
     }
 
     public function captchaTest () {
-        
+        $this->loadComponent('Captcha.Captcha');
     }
 }
