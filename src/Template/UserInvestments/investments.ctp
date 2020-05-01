@@ -8,7 +8,7 @@
 	 		<div class="card">
             	<div class="card-body">
                 	<div class="form-group">
-                    	<?= $this->Form->input('amount', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required', 'label' => 'Amount']) ?>
+                    	<?= $this->Form->input('amount', ['type' => 'number', 'autocomplete' => 'off', 'class' => 'form-control', 'required', 'label' => 'Amount', 'min' => 1000, 'oninvalid' => 'this.setCustomValidity("Minimum investment is 1000")']) ?>
                 	</div>
 	                <div class="form-group">
 	                    <?= $this->Form->input('reference_number', ['type' => 'text', 'autocomplete' => 'off', 'class' => 'form-control', 'required', 'label' => 'Reference Number']) ?>
