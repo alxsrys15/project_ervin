@@ -2,9 +2,9 @@
 <?php 
 $session = $this->request->session()->read('Auth.User');
 $options = [
+    'commision-requests' => 'Commissions',
     'captcha-payouts' => 'Captcha',
     'payout-requests' => 'Referrals',
-    'commision-requests' => 'Commissions'
 ];
 if ($session['status'] === "Inactive") {
     $options = [
@@ -37,7 +37,7 @@ if ($session['status'] === "Inactive") {
                         <?php foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= $request->date_start->format('Y-m-d') . ' - ' . $request->date_end->format('Y-m-d') ?></td>
-                                <td>P <?= $request->total ?></td>
+                                <td>P <?= number_format($request->amount, 2) ?></td>
                                 <td> <?= $request->status ?></td>
                             </tr>
                         <?php endforeach ?>

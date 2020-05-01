@@ -9,8 +9,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property \Cake\I18n\FrozenDate|null $date_start
  * @property \Cake\I18n\FrozenDate|null $date_end
- * @property int|null $amount
+ * @property float|null $amount
  * @property int|null $user_id
+ * @property string|null $status
  *
  * @property \App\Model\Entity\User $user
  */
@@ -30,6 +31,7 @@ class CommisionRequest extends Entity
         'date_end' => true,
         'amount' => true,
         'user_id' => true,
+        'status' => true,
         'user' => true,
     ];
 }

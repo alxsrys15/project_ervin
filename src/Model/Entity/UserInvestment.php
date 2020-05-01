@@ -9,9 +9,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property \Cake\I18n\FrozenDate|null $date
  * @property int|null $amount
- * @property int $user_id
- * @property string $reference_number
- * @property string $is_active
+ * @property int|null $user_id
+ * @property int|null $is_active
+ * @property string|null $reference_number
+ * @property \Cake\I18n\FrozenDate|null $date_approved
  *
  * @property \App\Model\Entity\User $user
  */
@@ -30,8 +31,9 @@ class UserInvestment extends Entity
         'date' => true,
         'amount' => true,
         'user_id' => true,
-        'reference_number' => true,
         'is_active' => true,
+        'reference_number' => true,
+        'date_approved' => true,
         'user' => true,
     ];
 }

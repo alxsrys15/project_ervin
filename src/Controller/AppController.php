@@ -38,6 +38,25 @@ class AppController extends Controller
      * @return void
      */
 
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        // $this->Security->setConfig('unlockedActions', [
+        //     'index', 
+        //     'faqs',
+        //     'getPackages',
+        //     'getReferrals',
+        //     'investments',
+        //     'referralPayout',
+        //     'captchaPayout',
+        //     'getCommissions',
+        //     'getReports',
+        //     'changeStatus',
+        //     'view',
+        //     'adminInvestments',
+        //     'getRequests'
+        // ]);
+    }
+
 
 
     public function initialize()
@@ -91,6 +110,8 @@ class AppController extends Controller
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
-        //$this->loadComponent('Security');
+        // $this->loadComponent('Security');
     }
+
+
 }

@@ -8,6 +8,9 @@
     <li class="nav-item">
         <a href="#!" class="nav-link" id="packages-tab" data-toggle="tab" data-model="users" data-method="getPackages">My packages</a>
     </li>
+        <li class="nav-item">
+            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="user-investments" data-method="investments">My Investments</a>
+        </li>
         <?php if ($session['status'] === "Active"): ?>
         <li class="nav-item">
             <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" data-model="users" data-method="getReferrals" href="#!">My Referrals</a>
@@ -21,13 +24,13 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="captcha-payouts" data-method="captchaPayout" href="#!">Captcha Payout</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="payout-requests" data-method="getReports" href="#!">Payout Transactions</a>
-        </li>
-        <li class="nav-item">
-            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="user-investments" data-method="investments">Investments</a>
-        </li>
         <?php endif ?>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="commision-requests" data-method="getCommissions" href="#!">Commission Payout</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="messages" aria-selected="false" data-model="commision-requests" data-method="getReports" href="#!">Payout Transactions</a>
+        </li>
     <?php else: ?>
     <li class="nav-item">
         <a class="nav-link" id="users-tab" data-toggle="tab" role="tab" aria-controls="settings" aria-selected="false" data-model="users" data-method="index" href="#!">Users</a>
@@ -45,7 +48,10 @@
         <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="captcha-payouts" data-method="index">Captcha Payout Requests</a>
     </li>
     <li class="nav-item">
-            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="user-investments" data-method="admin-investments">Investments</a>
+            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="user-investments" data-method="admin-investments">User Investments</a>
+    </li>
+    <li class="nav-item">
+            <a href="#!" class="nav-link" data-toggle="tab" id="requests-tab" data-model="commision-requests" data-method="index">Commission Requests</a>
     </li>
     <?php endif ?>
     
@@ -71,7 +77,7 @@
                     },
                     url: url + model + '/' + method,
                     type: 'post',
-                    beforeSend: function () {
+                    beforeSend: function (xhr) {
                         $('#blocker').show();
                     },
                     success: function (data) {

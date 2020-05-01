@@ -1,14 +1,23 @@
 <?php $this->Form->templates(['inputContainer' => '{{content}}']) ?>
-
+<?php 
+$session = $this->request->session()->read('Auth.User');
+$options = [
+    'payout-requests' => 'Referrals',
+    'captcha-payouts' => 'Captcha',
+    'commision-requests' => 'Commissions'
+];
+if ($session['status'] === "Inactive") {
+    $options = [
+        'commision-requests' => 'Commissions'
+    ];
+}
+?>
 <div style="padding: 10px">
     <div class="row">
         <div class="col-sm-4">
             <?= $this->Form->input('transaction_type', [
                 'type' => 'select',
-                'options' => [
-                    'payout-requests' => 'Referrals',
-                    'captcha-payouts' => 'Captcha'
-                ],
+                'options' => $options,
                 'class' => 'custom-select'
             ])  ?>
         </div>

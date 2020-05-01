@@ -132,6 +132,10 @@ $default = strtotime(date('Y-m-d')) <= strtotime(date('Y-m-12')) ? date('Y-m-12'
                             $('.btn-submit').addClass('disabled');
                             $('.btn-submit').addClass('btn-light');
                             $('.btn-submit').removeClass('btn-primary');
+                        } else {
+                            $('.btn-submit').removeClass('disabled');
+                            $('.btn-submit').removeClass('btn-light');
+                            $('.btn-submit').addClass('btn-primary');
                         }
                     }
                 })

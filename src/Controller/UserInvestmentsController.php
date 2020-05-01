@@ -32,7 +32,7 @@ class UserInvestmentsController extends AppController
 
     public function beforeFilter(Event $event){
         parent::beforeFilter($event);
-        $this->Auth->allow(['investments', 'admin_investments']);
+        // $this->Auth->allow(['investments', 'admin_investments']);
     }
     /**
      * View method
@@ -57,15 +57,13 @@ class UserInvestmentsController extends AppController
      */
     public function add()
     {
-        $userInvestment = $this->UserInvestments->newEntity();
         if ($this->request->is('post')) {
-            $userInvestment = $this->UserInvestments->patchEntity($userInvestment, $this->request->getData());
-            if ($this->UserInvestments->save($userInvestment)) {
-                $this->Flash->success(__('The user investment has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The user investment could not be saved. Please, try again.'));
+           $this->request->data['user_id'] = $this->Auth->User('id');
+           $userInvestment = $this->UserInvestments->newEntity($this->request->getData());
+           if ($this->UserInvestments->save($userInvestment)) {
+               $this->Flash->success(__('Investment saved. Please wait for approval.'));
+               return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+           }
         }
         $this->set(compact('userInvestment'));
     }
@@ -115,27 +113,12 @@ class UserInvestmentsController extends AppController
     }
 
     public function investments(){
-        $userInvestment = $this->UserInvestments->newEntity();
-        if ($this->request->is('post')) {
-            $userInvestment = $this->UserInvestments->patchEntity($userInvestment, $this->request->getData());
-            $userInvestment->user_id = $this->Auth->User('id');
-            $userInvestment->is_active = 'Inactive';
-            if ($this->UserInvestments->save($userInvestment)) {
-                $this->Flash->success(__('The user investment has been saved.'));
-
-                return $this->redirect(['action' => 'investments']);
-            }
-            $this->Flash->error(__('The user investment could not be saved. Please, try again.'));
-        }
-        $this->set(compact('userInvestment'));
-
-        $user_id = !isset($this->request->data['user_id']) ? $this->Auth->User('id') : $this->request->data['user_id'];
-
         $query = $this->UserInvestments->find('all', [
             'conditions' => [
-                'user_id' => $user_id
+                'user_id' => $this->Auth->User('id')
             ]
         ]);
+        
 
         $userInvestments = $this->paginate($query, ['limit' => 10]);
 
@@ -143,20 +126,19 @@ class UserInvestmentsController extends AppController
     }
     public function adminInvestments(){
 
-        $userInvestments = $this->UserInvestments->find('all');
-        
+        $userInvestments = $this->UserInvestments->find('all', [
+            'contain' => 'Users'
+        ]);
+        $userInvestments = $this->paginate($userInvestments, ['limit' => 10]);
         $this->set(compact('userInvestments', $userInvestments));
     }
     public function activateInvestment($userinvestment_id){
-        if ($userinvestment_id) {
+        if ($this->request->is('post') && $userinvestment_id) {
             $userInvesments = $this->UserInvestments->get($userinvestment_id);
-            $userInvesments->is_active = 'Active';
-            if ($this->UserInvestments->save($userInvesments)) {
-                if ('Inactive') {
-                    $this->Flash->success(__('Investment activated'));
-                } else {
-                    $this->Flash->success(__('Investment deactivated'));
-                }
+            $userInvesments->is_active = 1;
+            $userInvesments->date_approved = date('Y-m-d');
+            if ($e = $this->UserInvestments->save($userInvesments)) {
+                $this->Flash->success(__('Investment approved'));
             }
         }
         return $this->redirect(['controller' => 'home', 'action' => 'index']);

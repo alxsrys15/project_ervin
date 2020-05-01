@@ -38,7 +38,6 @@ class UserInvestmentsTable extends Table
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
         ]);
     }
 
@@ -63,10 +62,16 @@ class UserInvestmentsTable extends Table
             ->allowEmptyString('amount');
 
         $validator
+            ->allowEmptyString('is_active');
+
+        $validator
             ->scalar('reference_number')
-            ->maxLength('reference_number', 255)
-            ->requirePresence('reference_number', 'create')
-            ->notEmptyString('reference_number');
+            ->maxLength('reference_number', 70)
+            ->allowEmptyString('reference_number');
+
+        $validator
+            ->date('date_approved')
+            ->allowEmptyDate('date_approved');
 
         return $validator;
     }

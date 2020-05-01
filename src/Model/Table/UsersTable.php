@@ -60,6 +60,14 @@ class UsersTable extends Table
             'foreignKey' => 'user_level_id',
             'propertyName' => 'user_level'
         ]);
+
+        $this->hasMany('UserInvestments', [
+            'foreignKey' => 'user_id'
+        ]);
+
+        $this->hasMany('CommissionRequests', [
+            'foreignKey' => 'user_id'
+        ]);
     }
 
     /**

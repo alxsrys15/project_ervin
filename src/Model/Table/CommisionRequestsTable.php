@@ -62,8 +62,13 @@ class CommisionRequestsTable extends Table
             ->allowEmptyDate('date_end');
 
         $validator
-            ->integer('amount')
+            ->numeric('amount')
             ->allowEmptyString('amount');
+
+        $validator
+            ->scalar('status')
+            ->maxLength('status', 45)
+            ->allowEmptyString('status');
 
         return $validator;
     }
