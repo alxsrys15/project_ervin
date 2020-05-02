@@ -158,6 +158,17 @@ class CommisionRequestsController extends AppController
                 return $q->gte('date', $start_date);
             }) */;
 
+        if ($first_entry->first()) {
+            $first_inv = $first_entry->first();
+            $first_inv_date = $first_inv->date_approved->format('Y-m-d');
+            if (strtotime($first_inv_date) > strtotime($start_date)) {
+                $x = new \DateTime($first_inv_date);
+                $y = new \DateTime($end_date);
+                $diff = $x->diff($y);
+                $multiplier = $diff->days + 1;
+            }
+        }
+
         
 
         $total = 0;

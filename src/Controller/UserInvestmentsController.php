@@ -134,10 +134,14 @@ class UserInvestmentsController extends AppController
     }
     public function activateInvestment($userinvestment_id){
         if ($this->request->is('post') && $userinvestment_id) {
-            $userInvesments = $this->UserInvestments->get($userinvestment_id);
-            $userInvesments->is_active = 1;
-            $userInvesments->date_approved = date('Y-m-d');
-            if ($e = $this->UserInvestments->save($userInvesments)) {
+            $data = [
+                'is_active' => 1,
+                'date_approved' => date('Y-m-d')
+            ];
+            $userInvesment = $this->UserInvestments->get($userinvestment_id);
+            $userInvestment = $this->UserInvestments->patchEntity($userInvesment, $data);
+            // pr($userInvesment);die();
+            if ($this->UserInvestments->save($userInvesment)) {
                 $this->Flash->success(__('Investment approved'));
             }
         }

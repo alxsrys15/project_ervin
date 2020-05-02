@@ -41,12 +41,12 @@ class UserInvestmentsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'date' => '2020-05-01',
+                'date' => '2020-05-02',
                 'amount' => 1,
                 'user_id' => 1,
                 'is_active' => 1,
                 'reference_number' => 'Lorem ipsum dolor sit amet',
-                'date_approved' => '2020-05-01',
+                'date_approved' => '2020-05-02',
             ],
         ];
         parent::init();

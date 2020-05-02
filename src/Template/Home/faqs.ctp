@@ -1,7 +1,7 @@
 <div style="padding: 10px">
 	<p>GUIDE</p>
 	<div class="row">
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title">ANG UNA DAPAT GAWIN</h5>
@@ -23,7 +23,7 @@
 			</div>
 			<p>Note: ang iyong account ay valid sa loob ng 3 months</p>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title">PARAAN PANO KUMITA</h5>
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title">FAQ</h5>
@@ -62,6 +62,31 @@
 							* ito ay safety net ng company kung mag search tayo online ang ganung halaga na piso bawat captcha ay ang regular na presyo na binabayad ng mga malalaking company para mag solve ng captcha tulad ng google lahat ng sobra sa 500 ay mapupunta na sa company natin para ito nmn ay kumita at magtagal ang pagtulong.
 						</li>
 					</ol>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">INVESTMENTS</h5>
+					<p>Note: Ang account activation ay para sa Captcha Encoder lang.</p>
+					<p>MGA DAPAT GAWIN.</p>
+					<ol>
+						<li>
+							Enter ang amount na gustong i-invest at ilagay sa reference number ng inyong deposit slip. Click add investment.
+							<b>< UnionBank account ngCaptcha Philippinesaccount number: 109420320753 ></b>
+						</li>
+						<li>
+							Automatic na kikita ang inyong Investment ng 3.57% bawat araw. Makikita ito sa Commission Payout Tab.
+						</li>
+						<li>
+							Magrequest ng payout every Subday at Wednesday . Ang iyong income ay automatic na ipapadala sa bank account mo every Monday and Thursday
+						</li>
+						<li>
+							Isang buwan mula sa araw ng pag deposit mo ang iyong Capital ay automatic na isesend sa iyong bank account. no need to request.
+						</li>
+					</ol>
+					<p>P.S Saved lang ang iyong Unionbank account numbrt sa iyong profile.</p>
 				</div>
 			</div>
 		</div>

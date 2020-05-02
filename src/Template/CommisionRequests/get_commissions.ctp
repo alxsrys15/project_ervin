@@ -43,7 +43,7 @@ if (strtotime('today') > strtotime('wednesday this week') && strtotime('today') 
     					<tr>
     						<td><?= $invesment->date ?></td>
     						<td><?= $invesment->amount ?></td>
-    						<td><?= $invesment->date ?></td>
+    						<td><?= $invesment->date_approved ?></td>
     					</tr>
     					<?php endforeach ?>
     				<?php else: ?>
