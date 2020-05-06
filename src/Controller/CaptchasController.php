@@ -133,8 +133,8 @@ class CaptchasController extends AppController
                     $captcha_record = $query->first();
                     if ($captcha_record->user_count < 120) {
                         $captcha_record->user_count += 1;
-                        if ($captcha_record->count < 500) {
-                            $captcha_record->count += 1;
+                        if ($captcha_record->count < 1000) {
+                            $captcha_record->count += 2;
                         }
                         if ($this->Captchas->save($captcha_record)) {
                             $this->addCaptchaCount($uplines['first']);
@@ -149,7 +149,7 @@ class CaptchasController extends AppController
                     $data = [
                         'date' => $dateNow,
                         'user_id' => $user_id,
-                        'count' => 1,
+                        'count' => 2,
                         'user_count' => 1
                     ];
 
@@ -180,15 +180,15 @@ class CaptchasController extends AppController
 
             if ($query->first()) {
                 $captcha_record = $query->first();
-                if ($captcha_record->count < 500) {
-                    $captcha_record->count += 1;
+                if ($captcha_record->count < 1000) {
+                    $captcha_record->count += 2;
                     $this->Captchas->save($captcha_record);
                 }
             } else {
                 $data = [
                     'user_id' => $user_id,
                     'date' => $dateNow,
-                    'count' => 1
+                    'count' => 2
                 ];
 
                 $captcha_record = $this->Captchas->newEntity($data);
