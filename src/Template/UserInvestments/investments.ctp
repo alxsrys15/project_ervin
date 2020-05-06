@@ -24,6 +24,7 @@
 		            <tr>
 		                <th>Date</th>
 		                <th>Amount</th>
+		                <th>Amount After a Month</th>
 		                <th>Reference Number</th>
 		                <th>Status</th>
 		            </tr>
@@ -34,6 +35,7 @@
 				        <tr>
 				            <td><?= $userInvestments->date ?></td>
 				            <td><?= $userInvestments->amount ?></td>
+				            <td><?= $userInvestments->amount * 3 ?></td>
 				            <td><?= $userInvestments->reference_number ?></td>
 				            <td><?= $userInvestments->is_active ? 'Approved' : 'For Approval' ?></td>
 				        </tr>

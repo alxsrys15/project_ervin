@@ -119,7 +119,6 @@ class UserInvestmentsController extends AppController
             ]
         ]);
         
-
         $userInvestments = $this->paginate($query, ['limit' => 10]);
 
         $this->set(compact('userInvestments', 'userInvestments'));
