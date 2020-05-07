@@ -31,13 +31,21 @@
         		</thead>
 	        	<tbody>
 				<?php if (count($userInvestments) > 0): ?>
-				    <?php foreach ($userInvestments as $userInvestments): ?>
+				    <?php foreach ($userInvestments as $userInvestment): ?>
 				        <tr>
-				            <td><?= $userInvestments->date ?></td>
-				            <td><?= $userInvestments->amount ?></td>
-				            <td><?= $userInvestments->amount * 3 ?></td>
-				            <td><?= $userInvestments->reference_number ?></td>
-				            <td><?= $userInvestments->is_active ? 'Approved' : 'For Approval' ?></td>
+				            <td><?= $userInvestment->date ?></td>
+				            <td><?= $userInvestment->amount ?></td>
+					            <?php
+									$d=strtotime('12:00 am May 7 2020'); 
+									$d2=strtotime('12:00 am May 17 2020')
+									?>
+					            <?php if ($userInvestment->date->format('Y-m-d') >= date('Y-m-d', $d) && $userInvestment->date->format('Y-m-d') <= date('Y-m-d', $d2)):?>
+					            	<td><?= $userInvestment->amount * 3 ?></td>
+					            <?php else: ?>
+					            	<td> - </td>
+					            <?php endif ?>	
+				            <td><?= $userInvestment->reference_number ?></td>
+				            <td><?= $userInvestment->is_active ? 'Approved' : 'For Approval' ?></td>
 				        </tr>
 				    <?php endforeach; ?>
 				<?php else: ?>
