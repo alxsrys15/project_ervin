@@ -2,7 +2,7 @@
 	<p>GUIDE</p>
 	<div class="row">
 		<div class="col-sm-3">
-			<div class="card">
+			<!-- <div class="card">
 				<div class="card-body">
 					<h5 class="card-title">ANG UNA DAPAT GAWIN</h5>
 					<ol>
@@ -21,31 +21,31 @@
 					</ol>
 				</div>
 			</div>
-			<p>Note: ang iyong account ay valid sa loob ng 3 months</p>
+			<p>Note: ang iyong account ay valid sa loob ng 3 months</p> -->
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-6">
 			<div class="card">
 				<div class="card-body">
-					<h5 class="card-title">PARAAN PANO KUMITA</h5>
-					<ol>
+					<h5 class="card-title">Compensation para sa System Problem last May 5, 2020.</h5>
+					<ul>
 						<li>
-							PAGSOLVE NG CAPTCHA -
-							bawat captcha na ma solve ikaw ay kikita ng 1 peso maximum of 120 captcha bawat araw ang pwede mo i solve. nag rerefresh ang mga Captchacha bawat 12 ng hating gabi.
+							Naiintindihan namin ang reklamo ng mga member na madami ang hindi nakapag captcha at natapos encode nila marami rin ang hindi nakapasok ng investment ng mga referral nila dahil sa sobrang bagal at pagkasira ng system.
 						</li>
 						<li>
-							PAG REFER -
-							pwede kang mag refer ng iyong mga kakilala or mag advertise online pwede mo ishare ang iyong referral link na makikita sa iyong My referrals at sa iyong Profile i copy lang ito ay ipost or i send sa mga invites mo. ikaw ay kikita ng 125 pesos bawat referal na mag activate ng account hangang 3rd level referrals wala po itong limit at makukuha ang referrals earning mo every week.
+							Simula po May 7 hangang May 17 ang bawat captcha nyo po ay 2 pesos na at daily limit ay ginawa na pong 1000.
+							Nagkaroon din kami ng limited code package na kapag binili at nag activate even after ng promo period ay naka 2 pesos program pa rin mga codes. 
 						</li>
 						<li>
-							REFERRALS CAPTCHA - 
-							kung ikaw ay kumikita ng 1 peso bawat solve mo ng captcha ay ganun din ang earnings mo sa bawat solve ng iyong mga referrals up to 3rd lvl ikaw rin ay kikita ng 1 peso bawat captcha nila. limit of 500 pesos per day sa bawat account safety net po ito ng Captcha.ph para magtagal at kumita rin ang company.
+							For Investors within May 7 to May 17.
+							Magkakaroon pa rin kayo ng 25% weekly as per normal pero makakakuha kayo ng additional double of capital pagbalik ng inyong investment pagkatapos ng isang buwan.
 						</li>
-					</ol>
+					</ul>
+					<p>Note: Ang Compensation na ito ay valid lamang sa nasabing date.</p>
 				</div>
 			</div>
 		</div>
 		<div class="col-sm-3">
-			<div class="card">
+			<!-- <div class="card">
 				<div class="card-body">
 					<h5 class="card-title">FAQ</h5>
 					<ol>
@@ -63,10 +63,10 @@
 						</li>
 					</ol>
 				</div>
-			</div>
+			</div> -->
 		</div>
-		<div class="col-sm-3">
-			<div class="card">
+		<!-- <div class="col-sm-3"> -->
+			<!-- <div class="card">
 				<div class="card-body">
 					<h5 class="card-title">INVESTMENTS</h5>
 					<p>Note: Ang account activation ay para sa Captcha Encoder lang.</p>
@@ -88,8 +88,8 @@
 					</ol>
 					<p>P.S Saved lang ang iyong Unionbank account numbrt sa iyong profile.</p>
 				</div>
-			</div>
-		</div>
+			</div> -->
+		<!-- </div> -->
 	</div>
 	
 </div>
